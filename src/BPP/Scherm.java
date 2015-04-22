@@ -210,8 +210,22 @@ public class Scherm extends JFrame implements ActionListener
     {
         if (e.getSource() == handmatigPakketten)
         {
-            Dialoog dialoog = new Dialoog(this);
-            //pakketlijst.setValueAt(, 0, 0);
+            String hoogte = JOptionPane.showInputDialog("Hoogte in cm invoeren", JOptionPane.OK_CANCEL_OPTION);
+
+            if (hoogte != null && hoogte.length() > 0)
+            {
+                try
+                {
+                    int intHoogte;
+                    intHoogte = Integer.parseInt(hoogte);
+                    pakketlijst.add(intHoogte);
+                    model.fireTableDataChanged();                    
+                }
+                catch (NumberFormatException nfe)
+                {
+                    JOptionPane.showMessageDialog(this, "Geen nummer ingevoerd");
+                }
+            }
         }
         else if (e.getSource() == genereerPakketten)
         {
@@ -238,19 +252,7 @@ public class Scherm extends JFrame implements ActionListener
             }
 
             // Wanneer pakketlijst groter dan 0 is -> vullen van JTable inhoud.
-            if (pakketlijst.size() > 0)
-            {
-                int pakketTeller = 1;
-                for (Integer ph : pakketlijst)
-                {
-
-                    model.addRow(new Object[]
-                    {
-                        "" + pakketTeller + "", "" + ph + "",
-                    });
-                    pakketTeller++;
-                }
-            }
+           
 
             model.fireTableDataChanged();
         }
@@ -278,10 +280,22 @@ public class Scherm extends JFrame implements ActionListener
         }
 
     }
-
-    public JSpinner getAantal()
+    
+    public void toevoegen()
     {
-        return aantal;
+         if (pakketlijst.size() > 0)
+            {
+                int pakketTeller = 1;
+                for (Integer ph : pakketlijst)
+                {
+
+                    model.addRow(new Object[]
+                    {
+                        "" + pakketTeller + "", "" + ph + "",
+                    });
+                    pakketTeller++;
+                }
+            }
     }
 
 }
