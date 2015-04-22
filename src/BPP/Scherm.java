@@ -210,7 +210,7 @@ public class Scherm extends JFrame implements ActionListener
     {
         if (e.getSource() == handmatigPakketten)
         {
-            String hoogte = JOptionPane.showInputDialog("Hoogte in cm invoeren", JOptionPane.OK_CANCEL_OPTION);
+            String hoogte = JOptionPane.showInputDialog("Hoogte in cm invoeren:", JOptionPane.OK_CANCEL_OPTION);
 
             if (hoogte != null && hoogte.length() > 0)
             {
@@ -219,41 +219,35 @@ public class Scherm extends JFrame implements ActionListener
                     int intHoogte;
                     intHoogte = Integer.parseInt(hoogte);
                     pakketlijst.add(intHoogte);
-                    model.fireTableDataChanged();                    
+                    model.fireTableDataChanged();
                 }
                 catch (NumberFormatException nfe)
                 {
                     JOptionPane.showMessageDialog(this, "Geen nummer ingevoerd");
                 }
             }
+            lijstNaarTable();
+            model.fireTableDataChanged();
         }
         else if (e.getSource() == genereerPakketten)
         {
             int aantalKeer = (Integer) aantal.getValue();
             System.out.println(aantalKeer);
-            Random rand = new Random();
-            int minimum = 10;
-            int maximum = 100;
-
-            //Voorgaande rijen removen uit JTable
-            int aantalRijen = model.getRowCount();
-            for (int i = aantalRijen - 1; i >= 0; i--)
-            {
-                model.removeRow(i);
-            }
+//            Random rand = new Random();
+//            int minimum = 10;
+//            int maximum = 100;
 
             // For-loop aan de hand van het aantal pakketten dat je wilt genereren.          
             for (int teller = 0; teller < aantalKeer; teller++)
             {
-                int waarde = rand.nextInt(maximum) + minimum;
+//                int waarde = rand.nextInt(maximum) + minimum;
+                int waarde = (int) (Math.random() * (100-1) +1);
                 System.out.println(waarde);
                 pakketlijst.add(waarde);
 
             }
-
-            // Wanneer pakketlijst groter dan 0 is -> vullen van JTable inhoud.
-           
-
+            
+            lijstNaarTable();
             model.fireTableDataChanged();
         }
         else if (e.getSource() == leegPakketLijst)
@@ -278,24 +272,31 @@ public class Scherm extends JFrame implements ActionListener
         {
 
         }
-
     }
-    
-    public void toevoegen()
-    {
-         if (pakketlijst.size() > 0)
-            {
-                int pakketTeller = 1;
-                for (Integer ph : pakketlijst)
-                {
 
-                    model.addRow(new Object[]
-                    {
-                        "" + pakketTeller + "", "" + ph + "",
-                    });
-                    pakketTeller++;
-                }
+    public void lijstNaarTable()
+    {
+        if (pakketlijst.size() > 0)
+        {
+            // Eerst rijen legen
+            int aantalRijen = model.getRowCount();
+            for (int i = aantalRijen - 1; i >= 0; i--)
+            {
+                model.removeRow(i);
             }
+            
+            // Rijen vullen            
+            int pakketTeller = 1;
+            for (Integer ph : pakketlijst)
+            {
+
+                model.addRow(new Object[]
+                {
+                    "" + pakketTeller + "", "" + ph + "",
+                });
+                pakketTeller++;
+            }
+        }
     }
 
 }
