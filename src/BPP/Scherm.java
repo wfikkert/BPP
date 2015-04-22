@@ -2,6 +2,7 @@ package BPP;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
@@ -21,7 +22,10 @@ public class Scherm extends JFrame implements ActionListener
     private JButton genereerPakketten;
     private JButton handmatigPakketten;
     private JLabel titelPakketlijst;
-    private JTable pakketlijst;
+    private JTable jtPakketlijst;
+    private DefaultTableModel model;
+    private ArrayList<Integer> pakketlijst;
+    private JButton leegPakketLijst;
     private JTable resultatenlijst;
 
     public Scherm()
@@ -29,6 +33,9 @@ public class Scherm extends JFrame implements ActionListener
         setTitle("BPP-Simulator");
         setSize(1280, 720);
         setLayout(new GridLayout(1, 2));
+
+        //Pakketlijst aanmaken
+        pakketlijst = new ArrayList<>();
 
         // Linker en rechterpaneel aanmaken
         JPanel jpLinks = new JPanel();
@@ -56,11 +63,10 @@ public class Scherm extends JFrame implements ActionListener
         JPanel jpSelectPakketButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         // Nummerspinner en 'Genereer pakketten' button aanmaken en toevoegen aan JPannel
-        aantal = new JSpinner(new SpinnerNumberModel(0, 0, 25, 1));
+        aantal = new JSpinner(new SpinnerNumberModel(0, 0, null, 1));
         genereerPakketten = new JButton("Genereer pakketten");
         jpSelectPakketButtons.add(aantal);
         jpSelectPakketButtons.add(genereerPakketten);
-        
 
         // JPanel 1.2.1 toevoegen aan vak 1.2
         jpSelectPakketInh.add(jpSelectPakketButtons, BorderLayout.NORTH);
@@ -85,25 +91,26 @@ public class Scherm extends JFrame implements ActionListener
         titelPakketlijst.setFont(new Font("SansSerif", Font.BOLD, 26));
 
         // JTable aanmaken voor de pakketlijst
-        pakketlijst = new JTable();
-        pakketlijst.setModel(new DefaultTableModel(new Object[][]      
-        {
-            {
-                null
-            }
-        }, new String[]
-        {
-            "Hoogte"
-        }));
-        pakketlijst.setEnabled(false);
-        
+        model = new DefaultTableModel();
+        JTable jtPakketlijst = new JTable(model);
+        // Kolommen toevoegen
+        model.addColumn("Pakketnr.");
+        model.addColumn("Hoogte");
+
+        jtPakketlijst.getColumn("Pakketnr.").setMaxWidth(100);
+        jtPakketlijst.setEnabled(false);
+
+        // Leeg pakketlijst button
+        leegPakketLijst = new JButton("Leeg pakketlijst");
+
         // JTable toevoegen aan vak 2
         jpPakketlijst.add(titelPakketlijst, BorderLayout.NORTH);
-        jpPakketlijst.add(pakketlijst, BorderLayout.CENTER);
+        jpPakketlijst.add(jtPakketlijst, BorderLayout.CENTER);
+        jpPakketlijst.add(leegPakketLijst, BorderLayout.EAST);
 
         // JScrollPane aanmaken
         JScrollPane scrollbarLijst = new JScrollPane();
-        scrollbarLijst.setViewportView(pakketlijst);
+        scrollbarLijst.setViewportView(jtPakketlijst);
 
         //JScrollPane toevoegen aan vak 2
         jpPakketlijst.add(scrollbarLijst, BorderLayout.CENTER);
@@ -189,6 +196,7 @@ public class Scherm extends JFrame implements ActionListener
         handmatigPakketten.addActionListener(this);
         startSimulatie.addActionListener(this);
         stopSimulatie.addActionListener(this);
+        leegPakketLijst.addActionListener(this);
 
         // Onresizable en zichtbaar maken
         setResizable(false);
@@ -197,39 +205,76 @@ public class Scherm extends JFrame implements ActionListener
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(ActionEvent e
+    )
     {
         if (e.getSource() == handmatigPakketten)
         {
             Dialoog dialoog = new Dialoog(this);
-             //pakketlijst.setValueAt(, 0, 0);
+            //pakketlijst.setValueAt(, 0, 0);
         }
         else if (e.getSource() == genereerPakketten)
         {
-            int aantalkeer = (Integer) aantal.getValue();
-            System.out.println(aantalkeer);
+            int aantalKeer = (Integer) aantal.getValue();
+            System.out.println(aantalKeer);
             Random rand = new Random();
             int minimum = 10;
             int maximum = 100;
-            int waarde = rand.nextInt(maximum) + minimum;
-            System.out.println(waarde);
-            for (int teller = 0; teller <= 100; teller++)
+
+            //Voorgaande rijen removen uit JTable
+            int aantalRijen = model.getRowCount();
+            for (int i = aantalRijen - 1; i >= 0; i--)
             {
-                pakketlijst.setValueAt(waarde, teller, 0);
-                
+                model.removeRow(i);
             }
 
+            // For-loop aan de hand van het aantal pakketten dat je wilt genereren.          
+            for (int teller = 0; teller < aantalKeer; teller++)
+            {
+                int waarde = rand.nextInt(maximum) + minimum;
+                System.out.println(waarde);
+                pakketlijst.add(waarde);
+
+            }
+
+            // Wanneer pakketlijst groter dan 0 is -> vullen van JTable inhoud.
+            if (pakketlijst.size() > 0)
+            {
+                int pakketTeller = 1;
+                for (Integer ph : pakketlijst)
+                {
+
+                    model.addRow(new Object[]
+                    {
+                        "" + pakketTeller + "", "" + ph + "",
+                    });
+                    pakketTeller++;
+                }
+            }
+
+            model.fireTableDataChanged();
+        }
+        else if (e.getSource() == leegPakketLijst)
+        {
+            //Voorgaande rijen removen uit JTable
+            int aantalRijen = model.getRowCount();
+            for (int i = aantalRijen - 1; i >= 0; i--)
+            {
+                model.removeRow(i);
+            }
+
+            //ArrayList legen
+            pakketlijst.removeAll(pakketlijst);
         }
         else if (e.getSource() == startSimulatie)
         {
-            int aantalJtable = pakketlijst.getRowCount();
-            resultatenlijst.setValueAt(aantalJtable,0 , 1);
-            
+            int aantalJtable = jtPakketlijst.getRowCount();
+            resultatenlijst.setValueAt(aantalJtable, 0, 1);
+
         }
-        else if(e.getSource() == stopSimulatie)
+        else if (e.getSource() == stopSimulatie)
         {
-        
-            
+
         }
 
     }
