@@ -24,6 +24,7 @@ public class Scherm extends JFrame implements ActionListener
     private JLabel titelPakketlijst;
     private JTable jtPakketlijst;
     private DefaultTableModel model;
+    private DefaultTableModel model2;
     private ArrayList<Integer> pakketlijst;
     private JButton leegPakketLijst;
     private JTable resultatenlijst;
@@ -99,6 +100,8 @@ public class Scherm extends JFrame implements ActionListener
 
         jtPakketlijst.getColumn("Pakketnr.").setMaxWidth(100);
         jtPakketlijst.setEnabled(false);
+        jtPakketlijst.getTableHeader().setReorderingAllowed(false);
+        jtPakketlijst.getTableHeader().setResizingAllowed(false);
 
         // Leeg pakketlijst button
         leegPakketLijst = new JButton("Leeg pakketlijst");
@@ -163,17 +166,23 @@ public class Scherm extends JFrame implements ActionListener
         resultaten.setFont(new Font("SansSerif", Font.BOLD, 26));
         jpResulatenOverzicht.add(resultaten, BorderLayout.NORTH);
 
-        resultatenlijst = new JTable();
-        resultatenlijst.setModel(new DefaultTableModel(new Object[][]
-        {
-            {
-                null, null, null
-            }
-        }, new String[]
-        {
-            "Aantal containers", "Aantal pakketten", "Gemiddeld % gevuld"
-        }));
+        model2 = new DefaultTableModel();
+        resultatenlijst = new JTable(model2);
+        // Kolommen toevoegen
+        model2.addColumn("Algoritme");
+        model2.addColumn("Aantal containers");
+        model2.addColumn("Aantal pakketten");
+        model2.addColumn("Containers gemiddeld % gevuld");
+        resultatenlijst.getColumn("Algoritme").setMaxWidth(125);
+
+        
+
+        
+        //resultatenlijst.getColumn("Pakketnr.").setMaxWidth(100);
         resultatenlijst.setEnabled(false);
+        resultatenlijst.getTableHeader().setReorderingAllowed(false);
+        resultatenlijst.getTableHeader().setResizingAllowed(false);
+        
         jpResulatenOverzicht.add(resultatenlijst, BorderLayout.CENTER);
 
         scrollbarLijst = new JScrollPane();
@@ -197,6 +206,7 @@ public class Scherm extends JFrame implements ActionListener
         startSimulatie.addActionListener(this);
         stopSimulatie.addActionListener(this);
         leegPakketLijst.addActionListener(this);
+        System.out.println((625/4*2));
 
         // Onresizable en zichtbaar maken
         setResizable(false);
@@ -214,12 +224,22 @@ public class Scherm extends JFrame implements ActionListener
 
             if (hoogte != null && hoogte.length() > 0)
             {
+                
                 try
                 {
                     int intHoogte;
                     intHoogte = Integer.parseInt(hoogte);
+                    
+                    // kijken of hoogte kleiner is dan 10, zo niet dan een joptionpane met een waarschuwing
+                    if(intHoogte > 10 || intHoogte <=0)
+                    {
+                        JOptionPane.showMessageDialog(this, "Hoogte moet kleiner dan 10 of groter dan 0 zijn!");
+                    }
+                    else
+                    {
                     pakketlijst.add(intHoogte);
                     model.fireTableDataChanged();
+                    }
                 }
                 catch (NumberFormatException nfe)
                 {
@@ -241,7 +261,7 @@ public class Scherm extends JFrame implements ActionListener
             for (int teller = 0; teller < aantalKeer; teller++)
             {
 //                int waarde = rand.nextInt(maximum) + minimum;
-                int waarde = (int) (Math.random() * (100-1) +1);
+                int waarde = (int) (Math.random() * (11-1) +1);
                 System.out.println(waarde);
                 pakketlijst.add(waarde);
 
@@ -264,8 +284,8 @@ public class Scherm extends JFrame implements ActionListener
         }
         else if (e.getSource() == startSimulatie)
         {
-            int aantalJtable = jtPakketlijst.getRowCount();
-            resultatenlijst.setValueAt(aantalJtable, 0, 1);
+//            int aantalJtable = jtPakketlijst.getSize();
+//            resultatenlijst.setValueAt(aantalJtable, 0, 1);
 
         }
         else if (e.getSource() == stopSimulatie)
