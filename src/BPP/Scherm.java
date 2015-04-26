@@ -25,7 +25,7 @@ public class Scherm extends JFrame implements ActionListener
     private JTable jtPakketlijst;
     private DefaultTableModel model;
     private DefaultTableModel model2;
-    private ArrayList<Integer> pakketlijst;
+    private ArrayList<Pakket> pakketlijst;
     private JButton leegPakketLijst;
     private JTable resultatenlijst;
 
@@ -175,14 +175,11 @@ public class Scherm extends JFrame implements ActionListener
         model2.addColumn("Containers gemiddeld % gevuld");
         resultatenlijst.getColumn("Algoritme").setMaxWidth(125);
 
-        
-
-        
         //resultatenlijst.getColumn("Pakketnr.").setMaxWidth(100);
         resultatenlijst.setEnabled(false);
         resultatenlijst.getTableHeader().setReorderingAllowed(false);
         resultatenlijst.getTableHeader().setResizingAllowed(false);
-        
+
         jpResulatenOverzicht.add(resultatenlijst, BorderLayout.CENTER);
 
         scrollbarLijst = new JScrollPane();
@@ -206,7 +203,6 @@ public class Scherm extends JFrame implements ActionListener
         startSimulatie.addActionListener(this);
         stopSimulatie.addActionListener(this);
         leegPakketLijst.addActionListener(this);
-        System.out.println((625/4*2));
 
         // Onresizable en zichtbaar maken
         setResizable(false);
@@ -224,21 +220,22 @@ public class Scherm extends JFrame implements ActionListener
 
             if (hoogte != null && hoogte.length() > 0)
             {
-                
+
                 try
                 {
                     int intHoogte;
                     intHoogte = Integer.parseInt(hoogte);
-                    
+
                     // kijken of hoogte kleiner is dan 10, zo niet dan een joptionpane met een waarschuwing
-                    if(intHoogte > 10 || intHoogte <=0)
+                    if (intHoogte > 10 || intHoogte <= 0)
                     {
                         JOptionPane.showMessageDialog(this, "Hoogte moet kleiner dan 10 of groter dan 0 zijn!");
                     }
                     else
                     {
-                    pakketlijst.add(intHoogte);
-                    model.fireTableDataChanged();
+                        Pakket pakket = new Pakket(intHoogte);
+                        pakketlijst.add(pakket);
+                        model.fireTableDataChanged();
                     }
                 }
                 catch (NumberFormatException nfe)
@@ -252,21 +249,15 @@ public class Scherm extends JFrame implements ActionListener
         else if (e.getSource() == genereerPakketten)
         {
             int aantalKeer = (Integer) aantal.getValue();
-            System.out.println(aantalKeer);
-//            Random rand = new Random();
-//            int minimum = 10;
-//            int maximum = 100;
 
             // For-loop aan de hand van het aantal pakketten dat je wilt genereren.          
             for (int teller = 0; teller < aantalKeer; teller++)
             {
-//                int waarde = rand.nextInt(maximum) + minimum;
-                int waarde = (int) (Math.random() * (11-1) +1);
-                System.out.println(waarde);
-                pakketlijst.add(waarde);
-
+                int waarde = (int) (Math.random() * (11 - 1) + 1);
+                Pakket pakket = new Pakket(waarde);
+                pakketlijst.add(pakket);
             }
-            
+
             lijstNaarTable();
             model.fireTableDataChanged();
         }
@@ -287,6 +278,11 @@ public class Scherm extends JFrame implements ActionListener
 //            int aantalJtable = jtPakketlijst.getSize();
 //            resultatenlijst.setValueAt(aantalJtable, 0, 1);
 
+//            SimpelGretig sg = new SimpelGretig(pakketlijst);
+//            sg.berekenVolgorde();
+            VolledigeEnummeratie ve = new VolledigeEnummeratie(pakketlijst);
+            ve.vul();
+
         }
         else if (e.getSource() == stopSimulatie)
         {
@@ -304,12 +300,12 @@ public class Scherm extends JFrame implements ActionListener
             {
                 model.removeRow(i);
             }
-            
+
             // Rijen vullen            
             int pakketTeller = 1;
-            for (Integer ph : pakketlijst)
+            for (Pakket pakket : pakketlijst)
             {
-
+                int ph = pakket.getHoogte();
                 model.addRow(new Object[]
                 {
                     "" + pakketTeller + "", "" + ph + "",

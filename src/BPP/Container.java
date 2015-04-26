@@ -13,14 +13,21 @@ import java.util.ArrayList;
  */
 public class Container
 {
+    private int nummerContainer;
     private int hoogte;
-    private int breedte;
-    private ArrayList <Pakket> inhoudContainer;
-    
-    public Container(int hoogte, int breedte)
+    private ArrayList<Pakket> inhoudContainer;
+
+    public Container()
     {
-        this.hoogte = hoogte;
-        this.breedte = breedte;
+        inhoudContainer = new ArrayList<>();
+        hoogte = 10;
+    }
+    
+    public Container(int i)
+    {
+        this();
+        nummerContainer = i;
+        
     }
 
     public int getHoogte()
@@ -28,25 +35,40 @@ public class Container
         return hoogte;
     }
 
-    public int getBreedte()
-    {
-        return breedte;
-    }
-
     public ArrayList<Pakket> getInhoudContainer()
     {
         return inhoudContainer;
     }
-    
-    public boolean ruimteOver()
-    {
-        return false;
-    }
-    
-    public void voegToeAanInhoud()
-    {
-        
-    }
-    
 
+    public int getOvergeblevenHoogte()
+    {
+        int overgeblevenHoogte = hoogte;
+
+        for (Pakket p : inhoudContainer)
+        {
+            overgeblevenHoogte = overgeblevenHoogte - p.getHoogte();
+        }
+        return overgeblevenHoogte;
+    }
+
+    public void voegPakketToe(Pakket p)
+    {
+        inhoudContainer.add(p);
+
+    }
+
+    public void verwijder(Pakket p)
+    {
+        inhoudContainer.remove(p);
+    }
+
+    public String toString()
+    {
+        return "Deze container heeft een overgebleven hoogte van " + getOvergeblevenHoogte();
+    }
+
+    public int getNummer()
+    {
+        return nummerContainer;
+    }
 }

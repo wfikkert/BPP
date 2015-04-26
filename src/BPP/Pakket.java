@@ -12,24 +12,30 @@ package BPP;
 public class Pakket
 {
     private int hoogte;
-    private int breedte;
+    private boolean geplaatst;
     
-    public Pakket(int hoogte, int breedte)
+    public Pakket(int hoogte)
     {
         this.hoogte = hoogte;
-        this.breedte = breedte;
     }
 
     public int getHoogte()
     {
         return hoogte;
     }
-
-    public int getBreedte()
+    
+    public boolean isGeplaatst()
     {
-        return breedte;
+        return geplaatst;
     }
     
+    public void setGeplaatst(boolean b)
+    {
+        geplaatst = b;
+    }
     
-
+    public String toString()
+    {
+        return "Dit pakketje heeft een hoogte van: " + hoogte;
+    }
 }
