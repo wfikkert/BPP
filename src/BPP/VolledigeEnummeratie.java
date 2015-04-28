@@ -7,8 +7,8 @@ public class VolledigeEnummeratie
     private ArrayList<Artikel> artikellijst;
     private ArrayList<Pakket> pakketlijst;
     private ArrayList<Pakket> vollePakketten;
-    private int record;
     private ArrayList<Pakket> recordPakketLijst;
+    private int record;
     private int mogelijkheid = 0;
     private boolean besteGevonden;
 
@@ -21,10 +21,9 @@ public class VolledigeEnummeratie
 
         artikellijst = pl;
 
-        for (Artikel p : artikellijst)
-        {
-            pakketlijst.add(new Pakket());
-        }
+        pakketlijst.add(new Pakket());
+        pakketlijst.add(new Pakket());
+
         record = artikellijst.size();
 
     }
@@ -59,7 +58,7 @@ public class VolledigeEnummeratie
                 System.out.println("PAKKETTEN: " + p.getNummer());
                 System.out.println("Inhoud");
                 int artikelnr = 1;
-                for (Artikel a : p.getInhoudContainer())
+                for (Artikel a : p.getInhoudPakket())
                 {
                     System.out.println("Artikel " + artikelnr + " hoogte: " + a.getHoogte());
                     artikelnr++;
@@ -77,11 +76,10 @@ public class VolledigeEnummeratie
                     Pakket p = pakketlijst.get(i);
                     if (p.getOvergeblevenHoogte() >= a.getHoogte())
                     {
-                        p.voegPakketToe(a);
+                        p.voegArtikelToe(a);
                         a.setGeplaatst(true);
                         vul();
 
-                        
                         p.verwijder(a);
                         a.setGeplaatst(false);
                         i++;
@@ -89,9 +87,9 @@ public class VolledigeEnummeratie
                     }
                     else
                     {
-                        
+
                         System.out.println("Pakketten vol!");
-                        
+
                     }
                 }
 
@@ -158,7 +156,7 @@ public class VolledigeEnummeratie
                 System.out.println("Pakket: " + p.getNummer());
                 System.out.println("Inhoud");
                 int artikelnr = 1;
-                for (Artikel a : p.getInhoudContainer())
+                for (Artikel a : p.getInhoudPakket())
                 {
                     System.out.println("Pakket " + artikelnr + " hoogte: " + a.getHoogte());
                     artikelnr++;

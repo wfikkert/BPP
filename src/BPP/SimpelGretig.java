@@ -34,24 +34,24 @@ public class SimpelGretig extends Algoritme
             int hoogtePakket = artikel.getHoogte();
 
             // Overgebleven hoogte van de container uitrekenen
-            int hoogteOverContainer = pakketlijst.get(hoeveelsteContainer - 1).getOvergeblevenHoogte();
+            int hoogteOverPakket = pakketlijst.get(hoeveelsteContainer - 1).getOvergeblevenHoogte();
 
             // Kijken of de huidige container genoeg ruimte heeft
-            if (hoogtePakket <= hoogteOverContainer)
+            if (hoogtePakket <= hoogteOverPakket)
             {
                 richtingArray.add("Links");
-                huidigeContainer.voegPakketToe(artikel);
+                huidigeContainer.voegArtikelToe(artikel);
             }
 
             // Zo niet, nieuwe container maken
             else
             {
                 maakPakket();
-                hoogteOverContainer = pakketlijst.get(hoeveelsteContainer - 1).getOvergeblevenHoogte();
-                if (hoogtePakket <= hoogteOverContainer)
+                hoogteOverPakket = pakketlijst.get(hoeveelsteContainer - 1).getOvergeblevenHoogte();
+                if (hoogtePakket <= hoogteOverPakket)
                 {
                     richtingArray.add("Rechts");
-                    huidigeContainer.voegPakketToe(artikel);
+                    huidigeContainer.voegArtikelToe(artikel);
                 }
 
                 else

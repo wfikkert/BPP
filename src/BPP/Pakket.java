@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BPP;
 
 import java.util.ArrayList;
 
-/**
- *
- * Studentnummer: S1079295 Naam: Rik Lugtenberg Klas: ICTM2D Vak : JAVA
- */
 public class Pakket
 {
     private int nummerPakket;
@@ -35,7 +26,7 @@ public class Pakket
         return hoogte;
     }
 
-    public ArrayList<Artikel> getInhoudContainer()
+    public ArrayList<Artikel> getInhoudPakket()
     {
         return inhoudPakket;
     }
@@ -44,27 +35,27 @@ public class Pakket
     {
         int overgeblevenHoogte = hoogte;
 
-        for (Artikel p : inhoudPakket)
+        for (Artikel a : inhoudPakket)
         {
-            overgeblevenHoogte = overgeblevenHoogte - p.getHoogte();
+            overgeblevenHoogte = overgeblevenHoogte - a.getHoogte();
         }
         return overgeblevenHoogte;
     }
 
-    public void voegPakketToe(Artikel p)
+    public void voegArtikelToe(Artikel a)
     {
-        inhoudPakket.add(p);
+        inhoudPakket.add(a);
 
     }
 
-    public void verwijder(Artikel p)
+    public void verwijder(Artikel a)
     {
-        inhoudPakket.remove(p);
+        inhoudPakket.remove(a);
     }
 
     public String toString()
     {
-        return "Deze container heeft een overgebleven hoogte van " + getOvergeblevenHoogte();
+        return "Dit pakket heeft een overgebleven hoogte van " + getOvergeblevenHoogte();
     }
 
     public int getNummer()
