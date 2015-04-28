@@ -23,7 +23,7 @@ public class Dialoog extends JDialog implements ActionListener
     public Dialoog(JFrame frame)
     {
         super(frame, true);
-        setTitle("Pakketjes toevoegen");
+        setTitle("Artikelen toevoegen");
         setSize(300,200);
         setLayout(new FlowLayout());
         

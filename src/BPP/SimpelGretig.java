@@ -5,53 +5,53 @@ import java.util.ArrayList;
 public class SimpelGretig extends Algoritme
 {
 
-    private ArrayList<Artikel> pakketlijst;
-    private ArrayList<Pakket> containerlijst;
+    private ArrayList<Artikel> artikellijst;
+    private ArrayList<Pakket> pakketlijst;
     private ArrayList<String> richtingArray;
     private int hoeveelsteContainer = 0;
     private Pakket huidigeContainer;
 
     public SimpelGretig(ArrayList<Artikel> pl)
     {
+        artikellijst = new ArrayList<>();
         pakketlijst = new ArrayList<>();
-        containerlijst = new ArrayList<>();
         richtingArray = new ArrayList<>();
 
-        pakketlijst = pl;
+        artikellijst = pl;
     }
 
     public ArrayList<String> berekenVolgorde()
     {
         // Container aanmaken bij aanroepen van de functie
-        maakContainer();
+        maakPakket();
 
         // Pakketlijst array doorlopen
-        for (int teller = 0; teller < pakketlijst.size(); teller++)
+        for (int teller = 0; teller < artikellijst.size(); teller++)
         {
 
             //Pakket en hoogte ervan opslaan in een variabele
-            Artikel pakket = pakketlijst.get(teller);
-            int hoogtePakket = pakket.getHoogte();
+            Artikel artikel = artikellijst.get(teller);
+            int hoogtePakket = artikel.getHoogte();
 
             // Overgebleven hoogte van de container uitrekenen
-            int hoogteOverContainer = containerlijst.get(hoeveelsteContainer - 1).getOvergeblevenHoogte();
+            int hoogteOverContainer = pakketlijst.get(hoeveelsteContainer - 1).getOvergeblevenHoogte();
 
             // Kijken of de huidige container genoeg ruimte heeft
             if (hoogtePakket <= hoogteOverContainer)
             {
                 richtingArray.add("Links");
-                huidigeContainer.voegPakketToe(pakket);
+                huidigeContainer.voegPakketToe(artikel);
             }
 
             // Zo niet, nieuwe container maken
             else
             {
-                maakContainer();
-                hoogteOverContainer = containerlijst.get(hoeveelsteContainer - 1).getOvergeblevenHoogte();
+                maakPakket();
+                hoogteOverContainer = pakketlijst.get(hoeveelsteContainer - 1).getOvergeblevenHoogte();
                 if (hoogtePakket <= hoogteOverContainer)
                 {
                     richtingArray.add("Rechts");
-                    huidigeContainer.voegPakketToe(pakket);
+                    huidigeContainer.voegPakketToe(artikel);
                 }
 
                 else
@@ -66,10 +66,10 @@ public class SimpelGretig extends Algoritme
         return richtingArray;
     }
 
-    public void maakContainer()
+    public void maakPakket()
     {
-        Pakket container = new Pakket();
-        containerlijst.add(container);
+        Pakket pakket = new Pakket();
+        pakketlijst.add(pakket);
         hoeveelsteContainer++;
     }
     

@@ -36,6 +36,6 @@ public class Artikel
     
     public String toString()
     {
-        return "Dit pakketje heeft een hoogte van: " + hoogte;
+        return "Dit artikel heeft een hoogte van: " + hoogte;
     }
 }

@@ -13,20 +13,20 @@ import java.util.ArrayList;
  */
 public class Pakket
 {
-    private int nummerContainer;
+    private int nummerPakket;
     private int hoogte;
-    private ArrayList<Artikel> inhoudContainer;
+    private ArrayList<Artikel> inhoudPakket;
 
     public Pakket()
     {
-        inhoudContainer = new ArrayList<>();
+        inhoudPakket = new ArrayList<>();
         hoogte = 10;
     }
     
     public Pakket(int i)
     {
         this();
-        nummerContainer = i;
+        nummerPakket = i;
         
     }
 
@@ -37,14 +37,14 @@ public class Pakket
 
     public ArrayList<Artikel> getInhoudContainer()
     {
-        return inhoudContainer;
+        return inhoudPakket;
     }
 
     public int getOvergeblevenHoogte()
     {
         int overgeblevenHoogte = hoogte;
 
-        for (Artikel p : inhoudContainer)
+        for (Artikel p : inhoudPakket)
         {
             overgeblevenHoogte = overgeblevenHoogte - p.getHoogte();
         }
@@ -53,13 +53,13 @@ public class Pakket
 
     public void voegPakketToe(Artikel p)
     {
-        inhoudContainer.add(p);
+        inhoudPakket.add(p);
 
     }
 
     public void verwijder(Artikel p)
     {
-        inhoudContainer.remove(p);
+        inhoudPakket.remove(p);
     }
 
     public String toString()
@@ -69,6 +69,6 @@ public class Pakket
 
     public int getNummer()
     {
-        return nummerContainer;
+        return nummerPakket;
     }
 }
