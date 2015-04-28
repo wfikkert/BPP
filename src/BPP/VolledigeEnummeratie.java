@@ -6,6 +6,7 @@ public class VolledigeEnummeratie
 {
     private ArrayList<Artikel> artikellijst;
     private ArrayList<Pakket> pakketlijst;
+    private ArrayList<Pakket> vollePakketten;
     private int record;
     private ArrayList<Pakket> recordPakketLijst;
     private int mogelijkheid = 0;
@@ -16,9 +17,9 @@ public class VolledigeEnummeratie
         artikellijst = new ArrayList<>();
         pakketlijst = new ArrayList<>();
         recordPakketLijst = new ArrayList<>();
+        vollePakketten = new ArrayList<>();
 
         artikellijst = pl;
-//        int containerTeller = 1;
 
         for (Artikel p : artikellijst)
         {
@@ -37,30 +38,30 @@ public class VolledigeEnummeratie
             // Mogelijkheid teller
             mogelijkheid++;
 
-            // Kijken hoeveel containers er gevuld zijn met deze mogelijkheid
+            // Kijken hoeveel pakketten er gevuld zijn met deze mogelijkheid
             int gevuldePakketten = aantalGevuld();
 
             // Lijn aan het begin van een container
             System.out.println("______________________________________________________");
             System.out.println("Combinatie: " + mogelijkheid);
             System.out.println("______________________________________________________");
-            System.out.println("Record aantal containers: " + record);
-            System.out.println(" Huidig aantal gevulde containers: " + gevuldePakketten);
+            System.out.println("Record aantal pakketten: " + record);
+            System.out.println(" Huidig aantal gevulde pakketten: " + gevuldePakketten);
 
             // Checken of het een record is
             checkRecord(gevuldePakketten);
 
-            // Stippellijn onder record en huidig gevulde containers
+            // Stippellijn onder record en huidig gevulde pakketten
             System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - -");
 
             for (Pakket p : recordPakketLijst)
             {
-                System.out.println("CONTAINER: " + p.getNummer());
+                System.out.println("PAKKETTEN: " + p.getNummer());
                 System.out.println("Inhoud");
                 int artikelnr = 1;
                 for (Artikel a : p.getInhoudContainer())
                 {
-                    System.out.println("Pakket " + artikelnr + " hoogte: " + a.getHoogte());
+                    System.out.println("Artikel " + artikelnr + " hoogte: " + a.getHoogte());
                     artikelnr++;
                 }
             }
@@ -88,8 +89,8 @@ public class VolledigeEnummeratie
                     }
                     else
                     {
-                        i= -1;
-                        System.out.println("Containers vol!");
+                        
+                        System.out.println("Pakketten vol!");
                         
                     }
                 }
@@ -134,7 +135,6 @@ public class VolledigeEnummeratie
         int gevuldePakketten = 0;
         for (Pakket p : pakketlijst)
         {
-//            System.out.println("CONTAINER " + c.getNummer() + ": Overgebleven hoogte:" + c.getOvergeblevenHoogte() + "< (kleiner dan) max. hoogte: " + c.getHoogte());
             if (p.getOvergeblevenHoogte() < p.getHoogte())
             {
                 gevuldePakketten++;
@@ -152,10 +152,10 @@ public class VolledigeEnummeratie
         {
             record = i;
             recordPakketLijst = pakketlijst;
-            System.out.println("Nieuw Record, inhoud per container");
+            System.out.println("Nieuw Record, inhoud per pakket");
             for (Pakket p : recordPakketLijst)
             {
-                System.out.println("CONTAINER: " + p.getNummer());
+                System.out.println("Pakket: " + p.getNummer());
                 System.out.println("Inhoud");
                 int artikelnr = 1;
                 for (Artikel a : p.getInhoudContainer())

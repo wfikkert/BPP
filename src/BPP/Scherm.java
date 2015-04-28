@@ -13,20 +13,20 @@ import javax.swing.table.*;
 public class Scherm extends JFrame implements ActionListener
 {
 
-    private JButton pakketToevoegen;
-    private JLabel jlSelectPakketTitel;
+    private JButton artikelToevoegen;
+    private JLabel jlSelectArtikelTitel;
     private JButton stopSimulatie;
     private JButton startSimulatie;
     private Tekenpanel tp;
     private JSpinner aantal;
-    private JButton genereerPakketten;
-    private JButton handmatigPakketten;
-    private JLabel titelPakketlijst;
-    private JTable jtPakketlijst;
+    private JButton genereerArtikelen;
+    private JButton handmatigArtikelen;
+    private JLabel titelArtikellijst;
+    private JTable jtArtikellijst;
     private DefaultTableModel model;
     private DefaultTableModel model2;
-    private ArrayList<Artikel> pakketlijst;
-    private JButton leegPakketLijst;
+    private ArrayList<Artikel> artikellijst;
+    private JButton leegArtikellijst;
     private JTable resultatenlijst;
 
     public Scherm()
@@ -35,8 +35,8 @@ public class Scherm extends JFrame implements ActionListener
         setSize(1280, 720);
         setLayout(new GridLayout(1, 2));
 
-        //Pakketlijst aanmaken
-        pakketlijst = new ArrayList<>();
+        //Artikellijst aanmaken
+        artikellijst = new ArrayList<>();
 
         // Linker en rechterpaneel aanmaken
         JPanel jpLinks = new JPanel();
@@ -50,73 +50,73 @@ public class Scherm extends JFrame implements ActionListener
         jpRechts.setLayout(new GridLayout(5, 1));
 
         // Rij 1 van het rechtervak met invulling ervan, verdelen in 2 rijen met 1 kolom
-        JPanel jpPakketSelectie = new JPanel();
-        jpPakketSelectie.setLayout(new BorderLayout());
-        jlSelectPakketTitel = new JLabel("Pakketten toevoegen");
-        jlSelectPakketTitel.setFont(new Font("SansSerif", Font.BOLD, 26));
+        JPanel jpArtikelSelectie = new JPanel();
+        jpArtikelSelectie.setLayout(new BorderLayout());
+        jlSelectArtikelTitel = new JLabel("Artikelen toevoegen");
+        jlSelectArtikelTitel.setFont(new Font("SansSerif", Font.BOLD, 26));
 
         // Eerste rij van de GridLayout vullen, van vak 1
-        jpPakketSelectie.add(jlSelectPakketTitel, BorderLayout.NORTH);
+        jpArtikelSelectie.add(jlSelectArtikelTitel, BorderLayout.NORTH);
 
         // JPanel aanmaken voor het vak 1.2, onderverdelen in 2 rijen en 1 kolom
-        JPanel jpSelectPakketInh = new JPanel();
-        jpSelectPakketInh.setLayout(new BorderLayout());
-        JPanel jpSelectPakketButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel jpSelectArtikelInh = new JPanel();
+        jpSelectArtikelInh.setLayout(new BorderLayout());
+        JPanel jpSelectArtikelButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        // Nummerspinner en 'Genereer pakketten' button aanmaken en toevoegen aan JPannel
+        // Nummerspinner en 'Genereer artikelten' button aanmaken en toevoegen aan JPannel
         aantal = new JSpinner(new SpinnerNumberModel(0, 0, null, 1));
-        genereerPakketten = new JButton("Genereer pakketten");
-        jpSelectPakketButtons.add(aantal);
-        jpSelectPakketButtons.add(genereerPakketten);
+        genereerArtikelen = new JButton("Genereer artikel");
+        jpSelectArtikelButtons.add(aantal);
+        jpSelectArtikelButtons.add(genereerArtikelen);
 
         // JPanel 1.2.1 toevoegen aan vak 1.2
-        jpSelectPakketInh.add(jpSelectPakketButtons, BorderLayout.NORTH);
+        jpSelectArtikelInh.add(jpSelectArtikelButtons, BorderLayout.NORTH);
 
-        // JPanel aanmaken voor 1.2.2, button 'Handmatig pakketten toevoegen'
-        JPanel jpSelectPakketButtonsHandm = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        handmatigPakketten = new JButton("Handmatig pakketten toevoegen");
-        jpSelectPakketButtonsHandm.add(handmatigPakketten);
+        // JPanel aanmaken voor 1.2.2, button 'Handmatig artikelen toevoegen'
+        JPanel jpSelectArtikelButtonsHandm = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        handmatigArtikelen = new JButton("Handmatig artikelen toevoegen");
+        jpSelectArtikelButtonsHandm.add(handmatigArtikelen);
 
         // Vak 1.2.2 toevoegen aan 1.2
-        jpSelectPakketInh.add(jpSelectPakketButtonsHandm, BorderLayout.CENTER);
+        jpSelectArtikelInh.add(jpSelectArtikelButtonsHandm, BorderLayout.CENTER);
 
         // Vak 1.2 toevoegen aan vak 1
-        jpPakketSelectie.add(jpSelectPakketInh);
+        jpArtikelSelectie.add(jpSelectArtikelInh);
 
         // JPanel aanmaken voor vak 2
-        JPanel jpPakketlijst = new JPanel();
-        jpPakketlijst.setLayout(new BorderLayout());
+        JPanel jpArtikellijst = new JPanel();
+        jpArtikellijst.setLayout(new BorderLayout());
 
         // Titel aanmaken voor vak 2
-        titelPakketlijst = new JLabel("Pakketlijst");
-        titelPakketlijst.setFont(new Font("SansSerif", Font.BOLD, 26));
+        titelArtikellijst = new JLabel("Artikellijst");
+        titelArtikellijst.setFont(new Font("SansSerif", Font.BOLD, 26));
 
-        // JTable aanmaken voor de pakketlijst
+        // JTable aanmaken voor de artikellijst
         model = new DefaultTableModel();
-        JTable jtPakketlijst = new JTable(model);
+        JTable jtArtikellijst = new JTable(model);
         // Kolommen toevoegen
-        model.addColumn("Pakketnr.");
+        model.addColumn("Artikelnr.");
         model.addColumn("Hoogte");
 
-        jtPakketlijst.getColumn("Pakketnr.").setMaxWidth(100);
-        jtPakketlijst.setEnabled(false);
-        jtPakketlijst.getTableHeader().setReorderingAllowed(false);
-        jtPakketlijst.getTableHeader().setResizingAllowed(false);
+        jtArtikellijst.getColumn("Artikelnr.").setMaxWidth(100);
+        jtArtikellijst.setEnabled(false);
+        jtArtikellijst.getTableHeader().setReorderingAllowed(false);
+        jtArtikellijst.getTableHeader().setResizingAllowed(false);
 
-        // Leeg pakketlijst button
-        leegPakketLijst = new JButton("Leeg pakketlijst");
+        // Leeg artikellijst button
+        leegArtikellijst = new JButton("Leeg artikellijst");
 
         // JTable toevoegen aan vak 2
-        jpPakketlijst.add(titelPakketlijst, BorderLayout.NORTH);
-        jpPakketlijst.add(jtPakketlijst, BorderLayout.CENTER);
-        jpPakketlijst.add(leegPakketLijst, BorderLayout.EAST);
+        jpArtikellijst.add(titelArtikellijst, BorderLayout.NORTH);
+        jpArtikellijst.add(jtArtikellijst, BorderLayout.CENTER);
+        jpArtikellijst.add(leegArtikellijst, BorderLayout.EAST);
 
         // JScrollPane aanmaken
         JScrollPane scrollbarLijst = new JScrollPane();
-        scrollbarLijst.setViewportView(jtPakketlijst);
+        scrollbarLijst.setViewportView(jtArtikellijst);
 
         //JScrollPane toevoegen aan vak 2
-        jpPakketlijst.add(scrollbarLijst, BorderLayout.CENTER);
+        jpArtikellijst.add(scrollbarLijst, BorderLayout.CENTER);
 
         // Rechterpaneeel Vak 3 aanmaken
         JPanel jpAlgoEnActies = new JPanel();
@@ -170,12 +170,12 @@ public class Scherm extends JFrame implements ActionListener
         resultatenlijst = new JTable(model2);
         // Kolommen toevoegen
         model2.addColumn("Algoritme");
-        model2.addColumn("Aantal containers");
         model2.addColumn("Aantal pakketten");
-        model2.addColumn("Containers gemiddeld % gevuld");
+        model2.addColumn("Aantal artikelen");
+        model2.addColumn("Pakketten gemiddeld % gevuld");
         resultatenlijst.getColumn("Algoritme").setMaxWidth(125);
 
-        //resultatenlijst.getColumn("Pakketnr.").setMaxWidth(100);
+        //resultatenlijst.getColumn("Artikelnr.").setMaxWidth(100);
         resultatenlijst.setEnabled(false);
         resultatenlijst.getTableHeader().setReorderingAllowed(false);
         resultatenlijst.getTableHeader().setResizingAllowed(false);
@@ -188,8 +188,8 @@ public class Scherm extends JFrame implements ActionListener
         jpResulatenOverzicht.add(scrollbarLijst);
 
         // Vakken toevoegen aan rechterpaneel
-        jpRechts.add(jpPakketSelectie);
-        jpRechts.add(jpPakketlijst);
+        jpRechts.add(jpArtikelSelectie);
+        jpRechts.add(jpArtikellijst);
         jpRechts.add(jpAlgoEnActies);
         jpRechts.add(jpResulatenOverzicht);
 
@@ -198,11 +198,11 @@ public class Scherm extends JFrame implements ActionListener
         add(jpRechts);
 
         // actionlisteners toevoegen
-        genereerPakketten.addActionListener(this);
-        handmatigPakketten.addActionListener(this);
+        genereerArtikelen.addActionListener(this);
+        handmatigArtikelen.addActionListener(this);
         startSimulatie.addActionListener(this);
         stopSimulatie.addActionListener(this);
-        leegPakketLijst.addActionListener(this);
+        leegArtikellijst.addActionListener(this);
 
         // Onresizable en zichtbaar maken
         setResizable(false);
@@ -214,7 +214,7 @@ public class Scherm extends JFrame implements ActionListener
     public void actionPerformed(ActionEvent e
     )
     {
-        if (e.getSource() == handmatigPakketten)
+        if (e.getSource() == handmatigArtikelen)
         {
             String hoogte = JOptionPane.showInputDialog("Hoogte in cm invoeren:", JOptionPane.OK_CANCEL_OPTION);
 
@@ -233,8 +233,8 @@ public class Scherm extends JFrame implements ActionListener
                     }
                     else
                     {
-                        Artikel pakket = new Artikel(intHoogte);
-                        pakketlijst.add(pakket);
+                        Artikel artikel = new Artikel(intHoogte);
+                        artikellijst.add(artikel);
                         model.fireTableDataChanged();
                     }
                 }
@@ -246,22 +246,22 @@ public class Scherm extends JFrame implements ActionListener
             lijstNaarTable();
             model.fireTableDataChanged();
         }
-        else if (e.getSource() == genereerPakketten)
+        else if (e.getSource() == genereerArtikelen)
         {
             int aantalKeer = (Integer) aantal.getValue();
 
-            // For-loop aan de hand van het aantal pakketten dat je wilt genereren.          
+            // For-loop aan de hand van het aantal artikelen dat je wilt genereren.          
             for (int teller = 0; teller < aantalKeer; teller++)
             {
                 int waarde = (int) (Math.random() * (11 - 1) + 1);
-                Artikel pakket = new Artikel(waarde);
-                pakketlijst.add(pakket);
+                Artikel artikel = new Artikel(waarde);
+                artikellijst.add(artikel);
             }
 
             lijstNaarTable();
             model.fireTableDataChanged();
         }
-        else if (e.getSource() == leegPakketLijst)
+        else if (e.getSource() == leegArtikellijst)
         {
             //Voorgaande rijen removen uit JTable
             int aantalRijen = model.getRowCount();
@@ -271,16 +271,16 @@ public class Scherm extends JFrame implements ActionListener
             }
 
             //ArrayList legen
-            pakketlijst.removeAll(pakketlijst);
+            artikellijst.removeAll(artikellijst);
         }
         else if (e.getSource() == startSimulatie)
         {
-//            int aantalJtable = jtPakketlijst.getSize();
+//            int aantalJtable = jtArtikellijst.getSize();
 //            resultatenlijst.setValueAt(aantalJtable, 0, 1);
 
-//            SimpelGretig sg = new SimpelGretig(pakketlijst);
+//            SimpelGretig sg = new SimpelGretig(artikellijst);
 //            sg.berekenVolgorde();
-            VolledigeEnummeratie ve = new VolledigeEnummeratie(pakketlijst);
+            VolledigeEnummeratie ve = new VolledigeEnummeratie(artikellijst);
             ve.vul();
 
         }
@@ -292,7 +292,7 @@ public class Scherm extends JFrame implements ActionListener
 
     public void lijstNaarTable()
     {
-        if (pakketlijst.size() > 0)
+        if (artikellijst.size() > 0)
         {
             // Eerst rijen legen
             int aantalRijen = model.getRowCount();
@@ -302,15 +302,15 @@ public class Scherm extends JFrame implements ActionListener
             }
 
             // Rijen vullen            
-            int pakketTeller = 1;
-            for (Artikel pakket : pakketlijst)
+            int artikelTeller = 1;
+            for (Artikel artikel : artikellijst)
             {
-                int ph = pakket.getHoogte();
+                int ph = artikel.getHoogte();
                 model.addRow(new Object[]
                 {
-                    "" + pakketTeller + "", "" + ph + "",
+                    "" + artikelTeller + "", "" + ph + "",
                 });
-                pakketTeller++;
+                artikelTeller++;
             }
         }
     }
