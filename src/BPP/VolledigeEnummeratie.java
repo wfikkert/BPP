@@ -9,14 +9,13 @@ public class VolledigeEnummeratie
     private int record;
     private ArrayList<Container> recordContainerLijst;
     private int mogelijkheid = 0;
+    private boolean besteGevonden;
 
     public VolledigeEnummeratie(ArrayList<Pakket> pl)
     {
         pakketlijst = new ArrayList<>();
         containerlijst = new ArrayList<>();
         recordContainerLijst = new ArrayList<>();
-
-        System.out.println(record);
 
         pakketlijst = pl;
         int containerTeller = 1;
@@ -28,8 +27,6 @@ public class VolledigeEnummeratie
             containerTeller++;
         }
         record = pakketlijst.size();
-//        System.out.println(pakketlijst.toString());
-//        System.out.println(containerlijst.toString());
 
     }
 
@@ -39,38 +36,48 @@ public class VolledigeEnummeratie
         // Record bekijken
         if (allesGeplaatst())
         {
-            int gevuldeContainers = aantalGevuld();
-            System.out.println("______________________________________________________");
-            System.out.println("RECORD: " + record + " GEVULD: " + gevuldeContainers);
+            // Mogelijkheid teller
+            mogelijkheid++;
 
+            // Kijken hoeveel containers er gevuld zijn met deze mogelijkheid
+            int gevuldeContainers = aantalGevuld();
+
+            // Lijn aan het begin van een container
+            System.out.println("______________________________________________________");
+            System.out.println("Combinatie: " + mogelijkheid);
+            System.out.println("______________________________________________________");
+            System.out.println("Record aantal containers: " + record);
+            System.out.println(" Huidig aantal gevulde containers: " + gevuldeContainers);
+
+            // Checken of het een record is
             checkRecord(gevuldeContainers);
 
+            // Stippellijn onder record en huidig gevulde containers
             System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - -");
         }
 
-        for (Pakket p : pakketlijst)
-        {
-//            System.out.println(p.toString());
-            if (!p.isGeplaatst())
+       
+            for (Pakket p : pakketlijst)
             {
-                for (Container c : containerlijst)
+                if (!p.isGeplaatst())
                 {
-//                    System.out.println(c.toString());
-                    if (c.getOvergeblevenHoogte() >= p.getHoogte())
+                    for (Container c : containerlijst)
                     {
-                        mogelijkheid++;
-                        System.out.println("Combinatie " + mogelijkheid);
-                        c.voegPakketToe(p);
-                        p.setGeplaatst(true);
-                        vul();
+                        if (c.getOvergeblevenHoogte() >= p.getHoogte())
+                        {
 
-                        c.verwijder(p);
-                        p.setGeplaatst(false);
+                            c.voegPakketToe(p);
+                            p.setGeplaatst(true);
+                            vul();
+
+                            c.verwijder(p);
+                            p.setGeplaatst(false);
+                        }
                     }
                 }
-            }
-        }
 
+            }
+        
     }
 
     public boolean allesGeplaatst()
@@ -91,7 +98,7 @@ public class VolledigeEnummeratie
         int gevuldeContainers = 0;
         for (Container c : containerlijst)
         {
-            System.out.println("CONTAINER " + c.getNummer() + ": Overgebleven hoogte:" + c.getOvergeblevenHoogte() + "< (kleiner dan) max. hoogte: " + c.getHoogte());
+//            System.out.println("CONTAINER " + c.getNummer() + ": Overgebleven hoogte:" + c.getOvergeblevenHoogte() + "< (kleiner dan) max. hoogte: " + c.getHoogte());
             if (c.getOvergeblevenHoogte() < c.getHoogte())
             {
                 gevuldeContainers++;
@@ -104,6 +111,7 @@ public class VolledigeEnummeratie
 
     public void checkRecord(int i)
     {
+        // Check of er een record is, zo ja welke
         if (i < record)
         {
             record = i;
@@ -121,5 +129,6 @@ public class VolledigeEnummeratie
                 }
             }
         }
+
     }
 }
