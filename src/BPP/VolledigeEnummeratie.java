@@ -4,29 +4,27 @@ import java.util.ArrayList;
 
 public class VolledigeEnummeratie
 {
+    private ArrayList<Artikel> artikellijst;
     private ArrayList<Pakket> pakketlijst;
-    private ArrayList<Container> containerlijst;
     private int record;
-    private ArrayList<Container> recordContainerLijst;
+    private ArrayList<Pakket> recordPakketLijst;
     private int mogelijkheid = 0;
     private boolean besteGevonden;
 
-    public VolledigeEnummeratie(ArrayList<Pakket> pl)
+    public VolledigeEnummeratie(ArrayList<Artikel> pl)
     {
+        artikellijst = new ArrayList<>();
         pakketlijst = new ArrayList<>();
-        containerlijst = new ArrayList<>();
-        recordContainerLijst = new ArrayList<>();
+        recordPakketLijst = new ArrayList<>();
 
-        pakketlijst = pl;
-        int containerTeller = 1;
+        artikellijst = pl;
+//        int containerTeller = 1;
 
-        for (Pakket p : pakketlijst)
+        for (Artikel p : artikellijst)
         {
-            Container c = new Container(containerTeller);
-            containerlijst.add(c);
-            containerTeller++;
+            pakketlijst.add(new Pakket());
         }
-        record = pakketlijst.size();
+        record = artikellijst.size();
 
     }
 
@@ -40,52 +38,90 @@ public class VolledigeEnummeratie
             mogelijkheid++;
 
             // Kijken hoeveel containers er gevuld zijn met deze mogelijkheid
-            int gevuldeContainers = aantalGevuld();
+            int gevuldePakketten = aantalGevuld();
 
             // Lijn aan het begin van een container
             System.out.println("______________________________________________________");
             System.out.println("Combinatie: " + mogelijkheid);
             System.out.println("______________________________________________________");
             System.out.println("Record aantal containers: " + record);
-            System.out.println(" Huidig aantal gevulde containers: " + gevuldeContainers);
+            System.out.println(" Huidig aantal gevulde containers: " + gevuldePakketten);
 
             // Checken of het een record is
-            checkRecord(gevuldeContainers);
+            checkRecord(gevuldePakketten);
 
             // Stippellijn onder record en huidig gevulde containers
             System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - -");
+
+            for (Pakket p : recordPakketLijst)
+            {
+                System.out.println("CONTAINER: " + p.getNummer());
+                System.out.println("Inhoud");
+                int artikelnr = 1;
+                for (Artikel a : p.getInhoudContainer())
+                {
+                    System.out.println("Pakket " + artikelnr + " hoogte: " + a.getHoogte());
+                    artikelnr++;
+                }
+            }
         }
 
-       
-            for (Pakket p : pakketlijst)
+        for (Artikel a : artikellijst)
+        {
+            if (!a.isGeplaatst())
             {
-                if (!p.isGeplaatst())
+                int i = 0;
+                while (i < artikellijst.size() && i != -1)
                 {
-                    for (Container c : containerlijst)
+                    Pakket p = pakketlijst.get(i);
+                    if (p.getOvergeblevenHoogte() >= a.getHoogte())
                     {
-                        if (c.getOvergeblevenHoogte() >= p.getHoogte())
-                        {
+                        p.voegPakketToe(a);
+                        a.setGeplaatst(true);
+                        vul();
 
-                            c.voegPakketToe(p);
-                            p.setGeplaatst(true);
-                            vul();
+                        
+                        p.verwijder(a);
+                        a.setGeplaatst(false);
+                        i++;
 
-                            c.verwijder(p);
-                            p.setGeplaatst(false);
-                        }
+                    }
+                    else
+                    {
+                        i= -1;
+                        System.out.println("Containers vol!");
+                        
                     }
                 }
 
+//                for (Container c : artikellijst)
+//                {
+//                    
+//                    if (c.getOvergeblevenHoogte() >= p.getHoogte())
+//                    {
+//
+//                        c.voegPakketToe(p);
+//                        p.setGeplaatst(true);
+//                        vul();
+//                        
+//                        
+//                        c.verwijder(p);
+//                        p.setGeplaatst(false);
+//                    }
+//                    
+//                }
             }
-        
+
+        }
+
     }
 
     public boolean allesGeplaatst()
     {
         boolean b = true;
-        for (Pakket p : pakketlijst)
+        for (Artikel a : artikellijst)
         {
-            if (!p.isGeplaatst())
+            if (!a.isGeplaatst())
             {
                 b = false;
             }
@@ -95,17 +131,17 @@ public class VolledigeEnummeratie
 
     public int aantalGevuld()
     {
-        int gevuldeContainers = 0;
-        for (Container c : containerlijst)
+        int gevuldePakketten = 0;
+        for (Pakket p : pakketlijst)
         {
 //            System.out.println("CONTAINER " + c.getNummer() + ": Overgebleven hoogte:" + c.getOvergeblevenHoogte() + "< (kleiner dan) max. hoogte: " + c.getHoogte());
-            if (c.getOvergeblevenHoogte() < c.getHoogte())
+            if (p.getOvergeblevenHoogte() < p.getHoogte())
             {
-                gevuldeContainers++;
+                gevuldePakketten++;
             }
         }
 
-        return gevuldeContainers;
+        return gevuldePakketten;
 
     }
 
@@ -115,17 +151,17 @@ public class VolledigeEnummeratie
         if (i < record)
         {
             record = i;
-            recordContainerLijst = containerlijst;
+            recordPakketLijst = pakketlijst;
             System.out.println("Nieuw Record, inhoud per container");
-            for (Container c : recordContainerLijst)
+            for (Pakket p : recordPakketLijst)
             {
-                System.out.println("CONTAINER: " + c.getNummer());
+                System.out.println("CONTAINER: " + p.getNummer());
                 System.out.println("Inhoud");
-                int pakketnr = 1;
-                for (Pakket p : c.getInhoudContainer())
+                int artikelnr = 1;
+                for (Artikel a : p.getInhoudContainer())
                 {
-                    System.out.println("Pakket " + pakketnr + " hoogte: " + p.getHoogte());
-                    pakketnr++;
+                    System.out.println("Pakket " + artikelnr + " hoogte: " + a.getHoogte());
+                    artikelnr++;
                 }
             }
         }

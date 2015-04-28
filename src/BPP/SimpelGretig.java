@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class SimpelGretig extends Algoritme
 {
 
-    private ArrayList<Pakket> pakketlijst;
-    private ArrayList<Container> containerlijst;
+    private ArrayList<Artikel> pakketlijst;
+    private ArrayList<Pakket> containerlijst;
     private ArrayList<String> richtingArray;
     private int hoeveelsteContainer = 0;
-    private Container huidigeContainer;
+    private Pakket huidigeContainer;
 
-    public SimpelGretig(ArrayList<Pakket> pl)
+    public SimpelGretig(ArrayList<Artikel> pl)
     {
         pakketlijst = new ArrayList<>();
         containerlijst = new ArrayList<>();
@@ -30,7 +30,7 @@ public class SimpelGretig extends Algoritme
         {
 
             //Pakket en hoogte ervan opslaan in een variabele
-            Pakket pakket = pakketlijst.get(teller);
+            Artikel pakket = pakketlijst.get(teller);
             int hoogtePakket = pakket.getHoogte();
 
             // Overgebleven hoogte van de container uitrekenen
@@ -68,7 +68,7 @@ public class SimpelGretig extends Algoritme
 
     public void maakContainer()
     {
-        Container container = new Container();
+        Pakket container = new Pakket();
         containerlijst.add(container);
         hoeveelsteContainer++;
     }

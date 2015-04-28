@@ -25,7 +25,7 @@ public class Scherm extends JFrame implements ActionListener
     private JTable jtPakketlijst;
     private DefaultTableModel model;
     private DefaultTableModel model2;
-    private ArrayList<Pakket> pakketlijst;
+    private ArrayList<Artikel> pakketlijst;
     private JButton leegPakketLijst;
     private JTable resultatenlijst;
 
@@ -233,7 +233,7 @@ public class Scherm extends JFrame implements ActionListener
                     }
                     else
                     {
-                        Pakket pakket = new Pakket(intHoogte);
+                        Artikel pakket = new Artikel(intHoogte);
                         pakketlijst.add(pakket);
                         model.fireTableDataChanged();
                     }
@@ -254,7 +254,7 @@ public class Scherm extends JFrame implements ActionListener
             for (int teller = 0; teller < aantalKeer; teller++)
             {
                 int waarde = (int) (Math.random() * (11 - 1) + 1);
-                Pakket pakket = new Pakket(waarde);
+                Artikel pakket = new Artikel(waarde);
                 pakketlijst.add(pakket);
             }
 
@@ -303,7 +303,7 @@ public class Scherm extends JFrame implements ActionListener
 
             // Rijen vullen            
             int pakketTeller = 1;
-            for (Pakket pakket : pakketlijst)
+            for (Artikel pakket : pakketlijst)
             {
                 int ph = pakket.getHoogte();
                 model.addRow(new Object[]
