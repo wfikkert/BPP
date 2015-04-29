@@ -57,6 +57,14 @@ public class Pakket
     {
         return "Dit pakket heeft een overgebleven hoogte van " + getOvergeblevenHoogte();
     }
+    
+    public void printInhoud()
+    {
+        for(Artikel a : inhoudPakket)
+        {
+            System.out.println(a);
+        }
+    }
 
     public int getNummer()
     {

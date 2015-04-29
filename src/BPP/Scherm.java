@@ -28,6 +28,7 @@ public class Scherm extends JFrame implements ActionListener
     private ArrayList<Artikel> artikellijst;
     private JButton leegArtikellijst;
     private JTable resultatenlijst;
+    private JList algoLijst;
 
     public Scherm()
     {
@@ -133,7 +134,7 @@ public class Scherm extends JFrame implements ActionListener
         algoLijstInhoud.addElement("Simpel Gretig");
         algoLijstInhoud.addElement("Almost Worst");
 
-        JList algoLijst = new JList(algoLijstInhoud);
+        algoLijst = new JList(algoLijstInhoud);
         algoLijst.setSelectedIndex(0);
         algoLijst.setBorder(new LineBorder(Color.BLACK));
         algoLijst.setSelectionMode(SINGLE_SELECTION);
@@ -173,7 +174,7 @@ public class Scherm extends JFrame implements ActionListener
         model2.addColumn("Aantal pakketten");
         model2.addColumn("Aantal artikelen");
         model2.addColumn("Pakketten gemiddeld % gevuld");
-        resultatenlijst.getColumn("Algoritme").setMaxWidth(125);
+       
 
         //resultatenlijst.getColumn("Artikelnr.").setMaxWidth(100);
         resultatenlijst.setEnabled(false);
@@ -208,6 +209,16 @@ public class Scherm extends JFrame implements ActionListener
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void addResultaten(String a, int b, int c, int d)
+    {
+
+        model2.addRow(new Object[]
+        {
+            "" + a + "", "" + b + "","" + c + "", "" + d + "",
+        });
+
     }
 
     @Override
@@ -275,14 +286,25 @@ public class Scherm extends JFrame implements ActionListener
         }
         else if (e.getSource() == startSimulatie)
         {
+            int keuze = algoLijst.getSelectedIndex();
+            if (keuze == 0)
+            {
+
+            }
+            else if (keuze == 1)
+            {
+                SimpelGretig gr = new SimpelGretig(artikellijst,this);
+                gr.vul();
+            }
+            else if (keuze == 2)
+            {
+
+            }
+
 //            int aantalJtable = jtArtikellijst.getSize();
 //            resultatenlijst.setValueAt(aantalJtable, 0, 1);
-
 //            SimpelGretig sg = new SimpelGretig(artikellijst);
 //            sg.berekenVolgorde();
-            VolledigeEnummeratie ve = new VolledigeEnummeratie(artikellijst);
-            ve.vul();
-
         }
         else if (e.getSource() == stopSimulatie)
         {
