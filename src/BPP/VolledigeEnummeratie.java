@@ -44,7 +44,7 @@ public class VolledigeEnummeratie
             System.out.println("______________________________________________________");
             System.out.println("Combinatie: " + mogelijkheid);
             System.out.println("______________________________________________________");
-            System.out.println("Record aantal pakketten: " + record);
+            System.out.println("Record aantal pakketten: " + record );
             System.out.println(" Huidig aantal gevulde pakketten: " + gevuldePakketten);
 
             // Checken of het een record is
@@ -71,9 +71,20 @@ public class VolledigeEnummeratie
             if (!a.isGeplaatst())
             {
                 int i = 0;
-                while (i < artikellijst.size() && i != -1)
+                while (i < pakketlijst.size())
                 {
                     Pakket p = pakketlijst.get(i);
+                    Pakket pp;
+                    
+                    if (i == 0)
+                    {
+                        pp = pakketlijst.get(i + 1);
+                    }
+                    else 
+                    {
+                        pp = pakketlijst.get(i - 1);
+                    }
+
                     if (p.getOvergeblevenHoogte() >= a.getHoogte())
                     {
                         p.voegArtikelToe(a);
@@ -83,14 +94,26 @@ public class VolledigeEnummeratie
                         p.verwijder(a);
                         a.setGeplaatst(false);
                         i++;
-
                     }
+                    else if (pp.getOvergeblevenHoogte() >= a.getHoogte())
+                    {
+                        pp.voegArtikelToe(a);
+                        a.setGeplaatst(true);
+                        vul();
+
+                        pp.verwijder(a);
+                        a.setGeplaatst(false);
+                        i++;
+                    }
+
                     else
                     {
-
+                        vollePakketten.add(p);
+                        pakketlijst.remove(p);
+                        pakketlijst.add(new Pakket());
                         System.out.println("Pakketten vol!");
-
                     }
+
                 }
 
 //                for (Container c : artikellijst)
@@ -138,6 +161,7 @@ public class VolledigeEnummeratie
                 gevuldePakketten++;
             }
         }
+        gevuldePakketten = gevuldePakketten + vollePakketten.size();
 
         return gevuldePakketten;
 
