@@ -5,9 +5,10 @@ import java.util.ArrayList;
 public class VolledigeEnummeratie
 {
     private ArrayList<Artikel> artikellijst;
-    private ArrayList<Pakket> pakketlijst;
     private ArrayList<Pakket> vollePakketten;
+    private ArrayList<Pakket> actievePakketten;
     private ArrayList<Pakket> recordPakketLijst;
+    private ArrayList<String> richtingArray;
     private int record;
     private int mogelijkheid = 0;
     private boolean besteGevonden;
@@ -15,14 +16,15 @@ public class VolledigeEnummeratie
     public VolledigeEnummeratie(ArrayList<Artikel> pl)
     {
         artikellijst = new ArrayList<>();
-        pakketlijst = new ArrayList<>();
+        actievePakketten = new ArrayList<>();
         recordPakketLijst = new ArrayList<>();
         vollePakketten = new ArrayList<>();
+        richtingArray = new ArrayList<>();
 
         artikellijst = pl;
 
-        pakketlijst.add(new Pakket());
-        pakketlijst.add(new Pakket());
+        actievePakketten.add(new Pakket());
+        actievePakketten.add(new Pakket());
 
         record = artikellijst.size();
 
@@ -44,7 +46,7 @@ public class VolledigeEnummeratie
             System.out.println("______________________________________________________");
             System.out.println("Combinatie: " + mogelijkheid);
             System.out.println("______________________________________________________");
-            System.out.println("Record aantal pakketten: " + record );
+            System.out.println("Record aantal pakketten: " + record);
             System.out.println(" Huidig aantal gevulde pakketten: " + gevuldePakketten);
 
             // Checken of het een record is
@@ -70,50 +72,50 @@ public class VolledigeEnummeratie
         {
             if (!a.isGeplaatst())
             {
-                int i = 0;
-                while (i < pakketlijst.size())
+                int teller = 1;
+                for (Pakket p : actievePakketten)
                 {
-                    Pakket p = pakketlijst.get(i);
-                    Pakket pp;
-                    
-                    if (i == 0)
-                    {
-                        pp = pakketlijst.get(i + 1);
-                    }
-                    else 
-                    {
-                        pp = pakketlijst.get(i - 1);
-                    }
-
                     if (p.getOvergeblevenHoogte() >= a.getHoogte())
                     {
+
                         p.voegArtikelToe(a);
                         a.setGeplaatst(true);
                         vul();
-
+                        
+                        
                         p.verwijder(a);
+                        vollePakketten.remove(p);
                         a.setGeplaatst(false);
-                        i++;
                     }
-                    else if (pp.getOvergeblevenHoogte() >= a.getHoogte())
-                    {
-                        pp.voegArtikelToe(a);
-                        a.setGeplaatst(true);
-                        vul();
-
-                        pp.verwijder(a);
-                        a.setGeplaatst(false);
-                        i++;
-                    }
-
                     else
                     {
-                        vollePakketten.add(p);
-                        pakketlijst.remove(p);
-                        pakketlijst.add(new Pakket());
-                        System.out.println("Pakketten vol!");
+                        if(teller == 1)
+                        {
+                            teller++;
+                        }
+                        else if (teller==2)
+                        {
+                            int overgeblevenPakketEen = actievePakketten.get(0).getOvergeblevenHoogte();
+                            int overgeblevenPakketTwee = actievePakketten.get(1).getOvergeblevenHoogte();
+                            
+                            if(overgeblevenPakketEen > overgeblevenPakketTwee)
+                            {
+                                vollePakketten.add(actievePakketten.get(0));
+                                richtingArray.add("links");
+                                actievePakketten.set(0, new Pakket());
+                                vul();
+                            }
+                            else
+                            {
+                                vollePakketten.add(actievePakketten.get(1));
+                                richtingArray.add("rechts");
+                                actievePakketten.set(1, new Pakket());
+                                vul();
+                            }
+                            teller = 1;
+                        }
                     }
-
+                    
                 }
 
 //                for (Container c : artikellijst)
@@ -154,7 +156,8 @@ public class VolledigeEnummeratie
     public int aantalGevuld()
     {
         int gevuldePakketten = 0;
-        for (Pakket p : pakketlijst)
+       
+        for (Pakket p : actievePakketten)
         {
             if (p.getOvergeblevenHoogte() < p.getHoogte())
             {
@@ -173,9 +176,25 @@ public class VolledigeEnummeratie
         if (i < record)
         {
             record = i;
-            recordPakketLijst = pakketlijst;
+            recordPakketLijst = vollePakketten;
+            for(Pakket p : actievePakketten)
+            {
+                recordPakketLijst.add(p);
+            }
+            
             System.out.println("Nieuw Record, inhoud per pakket");
             for (Pakket p : recordPakketLijst)
+            {
+                System.out.println("Pakket: " + p.getNummer());
+                System.out.println("Inhoud");
+                int artikelnr = 1;
+                for (Artikel a : p.getInhoudPakket())
+                {
+                    System.out.println("Pakket " + artikelnr + " hoogte: " + a.getHoogte());
+                    artikelnr++;
+                }
+            }
+            for (Pakket p : actievePakketten)
             {
                 System.out.println("Pakket: " + p.getNummer());
                 System.out.println("Inhoud");
