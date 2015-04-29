@@ -62,5 +62,4 @@ public class Pakket
     {
         return nummerPakket;
     }
-    
 }
