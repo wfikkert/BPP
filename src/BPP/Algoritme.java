@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 public abstract class Algoritme
 {
-    private int gekozenAlgo;
-    private ArrayList <Artikel> uiteindelijkeVolgorde;
+    public abstract void vul();
+//    public abstract ArrayList<Pakket> getVollePakketten();
+//    public abstract ArrayList<Pakket> getActievePakketten();
+//    public abstract ArrayList<String> getRichtingen();
     
-    public abstract ArrayList<String> berekenVolgorde();
 
 }

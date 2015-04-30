@@ -2,7 +2,7 @@ package BPP;
 
 import java.util.ArrayList;
 
-public class SimpelGretig
+public class SimpelGretig extends Algoritme
 {
 
     private Scherm scherm;
@@ -11,6 +11,7 @@ public class SimpelGretig
     private ArrayList<Pakket> actievePakketten;
     private ArrayList<Pakket> vollePakketten;
     private ArrayList<String> richtingArray;
+    private ArrayList<ArrayList<String>> actiePerArtikel;
     private int hoeveelsteContainer = 0;
     private Pakket huidigeContainer;
 
@@ -20,6 +21,7 @@ public class SimpelGretig
         actievePakketten = new ArrayList<>();
         vollePakketten = new ArrayList<>();
         richtingArray = new ArrayList<>();
+        actiePerArtikel = new ArrayList<>();
 
         this.scherm = scherm;
 
@@ -34,11 +36,13 @@ public class SimpelGretig
     {
         for (Artikel a : artikellijst)
         {
-
+            ArrayList<String> actiesVanDitArtikel = new ArrayList<>();
             if (actievePakketten.get(0).getOvergeblevenHoogte() >= a.getHoogte())
             {
                 actievePakketten.get(0).voegArtikelToe(a);
                 richtingArray.add("Links");
+                actiesVanDitArtikel.add("naarLinks");
+                
             }
             else
             {
@@ -46,6 +50,7 @@ public class SimpelGretig
                 {
                     actievePakketten.get(1).voegArtikelToe(a);
                     richtingArray.add("Rechts");
+                    actiesVanDitArtikel.add("naarRechts");
                 }
                 else
                 {
@@ -58,6 +63,7 @@ public class SimpelGretig
 
                         actievePakketten.set(0, new Pakket());
                         System.out.println("nieuwe container links");
+                        actiesVanDitArtikel.add("nieuwLinks");
                     }
                     else
                     {
@@ -65,20 +71,23 @@ public class SimpelGretig
 
                         actievePakketten.set(1, new Pakket());
                         System.out.println("nieuwe container rechts");
+                        actiesVanDitArtikel.add("nieuwRechts");
                     }
 
                     if (actievePakketten.get(0).getOvergeblevenHoogte() >= a.getHoogte())
                     {
                         actievePakketten.get(0).voegArtikelToe(a);
                         richtingArray.add("Links");
+                        actiesVanDitArtikel.add("naarLinks");
                     }
                     else if (actievePakketten.get(1).getOvergeblevenHoogte() >= a.getHoogte())
                     {
                         actievePakketten.get(1).voegArtikelToe(a);
                         richtingArray.add("Rechts");
+                        actiesVanDitArtikel.add("naarRechts");
                     }
                 }
-
+                actiePerArtikel.add(actiesVanDitArtikel);
             }
         }
         printResultaat();
@@ -132,5 +141,9 @@ public class SimpelGretig
 
         scherm.addResultaten("Simpel Gretig", teller, artikellijst.size(), gemiddelde);
     }
-
+    
+    public ArrayList<ArrayList<String>> getActiePerArtikel()
+    {
+        return actiePerArtikel;
+    }
 }
