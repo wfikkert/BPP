@@ -21,6 +21,7 @@ public class SimpelGretig extends Algoritme
 
         this.scherm = scherm;
 
+        // Twee nieuwe pakketten maken
         actievePakketten.add(new Pakket());
         actievePakketten.add(new Pakket());
 
@@ -37,6 +38,7 @@ public class SimpelGretig extends Algoritme
 
             if (actievePakketten.get(0).getOvergeblevenHoogte() >= a.getHoogte())
             {
+                // Wanneer artikel in de linker container past -> plaatsen
                 actievePakketten.get(0).voegArtikelToe(a);
                 actiesVanDitArtikel.add("naarLinks");
 
@@ -85,6 +87,7 @@ public class SimpelGretig extends Algoritme
             }
             actiePerArtikel.add(actiesVanDitArtikel);
         }
+        resultaatNaarModel();
     }
 
     public void printResultaat()
@@ -105,7 +108,7 @@ public class SimpelGretig extends Algoritme
         }
     }
 
-    public void berekenResultaten()
+    public void resultaatNaarModel()
     {
         int teller = 0;
         int som = 0;

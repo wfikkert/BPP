@@ -288,26 +288,22 @@ public class Scherm extends JFrame implements ActionListener
             int keuze = algoLijst.getSelectedIndex();
             if (keuze == 0)
             {
+                VolledigeEnummeratie ve = new VolledigeEnummeratie(artikellijst, this);
+                ve.vul();
 
             }
             else if (keuze == 1)
             {
                 SimpelGretig gr = new SimpelGretig(artikellijst, this);
                 gr.vul();
-
-                for (int nummerVanPakketArray = 0; nummerVanPakketArray < gr.getActiePerArtikel().size(); nummerVanPakketArray++)
-                {
-                    System.out.println("Handelingen pakket " + (nummerVanPakketArray + 1) + ":");
-                    for (String s : gr.getActiePerArtikel().get(nummerVanPakketArray))
-                    {
-                        System.out.println(s);
-                    }
-                }
+                printHandelingPerArtikel(gr);
             }
             else if (keuze == 2)
             {
                 AlmostWorst aw = new AlmostWorst(artikellijst, this);
                 aw.vul();
+                System.out.println("PRINT AW");
+                printHandelingPerArtikel(aw);
 
             }
 
@@ -345,6 +341,20 @@ public class Scherm extends JFrame implements ActionListener
                 artikelTeller++;
             }
         }
+    }
+
+    public void printHandelingPerArtikel(Algoritme a)
+    {
+
+        for (int nummerVanPakketArray = 0; nummerVanPakketArray < a.getActiePerArtikel().size(); nummerVanPakketArray++)
+        {
+            System.out.println("Handelingen pakket " + (nummerVanPakketArray + 1) + ":");
+            for (String s : a.getActiePerArtikel().get(nummerVanPakketArray))
+            {
+                System.out.println(s);
+            }
+        }
+
     }
 
 }

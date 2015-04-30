@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class VolledigeEnummeratie
 {
+    private Scherm scherm;
     private ArrayList<Artikel> artikellijst;
     private ArrayList<Pakket> pakketlijst;
     private ArrayList<Pakket> vollePakketten;
@@ -12,7 +13,7 @@ public class VolledigeEnummeratie
     private int mogelijkheid = 0;
     private boolean besteGevonden;
 
-    public VolledigeEnummeratie(ArrayList<Artikel> pl)
+    public VolledigeEnummeratie(ArrayList<Artikel> pl, Scherm scherm)
     {
         artikellijst = new ArrayList<>();
         pakketlijst = new ArrayList<>();
@@ -20,17 +21,19 @@ public class VolledigeEnummeratie
         vollePakketten = new ArrayList<>();
 
         artikellijst = pl;
+        this.scherm = scherm;
 
-        pakketlijst.add(new Pakket());
-        pakketlijst.add(new Pakket());
+        for (Artikel a : artikellijst)
+        {
+            pakketlijst.add(new Pakket());
+        }
 
-        record = artikellijst.size();
+        record = artikellijst.size() + 1;
 
     }
 
     public void vul()
     {
-
         // Record bekijken
         if (allesGeplaatst())
         {
@@ -44,7 +47,7 @@ public class VolledigeEnummeratie
             System.out.println("______________________________________________________");
             System.out.println("Combinatie: " + mogelijkheid);
             System.out.println("______________________________________________________");
-            System.out.println("Record aantal pakketten: " + record );
+            System.out.println("Record aantal pakketten: " + record);
             System.out.println(" Huidig aantal gevulde pakketten: " + gevuldePakketten);
 
             // Checken of het een record is
@@ -70,48 +73,21 @@ public class VolledigeEnummeratie
         {
             if (!a.isGeplaatst())
             {
-                int i = 0;
-                while (i < pakketlijst.size())
+                for (Pakket p : pakketlijst)
                 {
-                    Pakket p = pakketlijst.get(i);
-                    Pakket pp;
-                    
-                    if (i == 0)
-                    {
-                        pp = pakketlijst.get(i + 1);
-                    }
-                    else 
-                    {
-                        pp = pakketlijst.get(i - 1);
-                    }
 
                     if (p.getOvergeblevenHoogte() >= a.getHoogte())
                     {
+
                         p.voegArtikelToe(a);
                         a.setGeplaatst(true);
                         vul();
 
-                        p.verwijder(a);
-                        a.setGeplaatst(false);
-                        i++;
-                    }
-                    else if (pp.getOvergeblevenHoogte() >= a.getHoogte())
-                    {
-                        pp.voegArtikelToe(a);
-                        a.setGeplaatst(true);
-                        vul();
-
-                        pp.verwijder(a);
-                        a.setGeplaatst(false);
-                        i++;
-                    }
-
-                    else
-                    {
-                        vollePakketten.add(p);
-                        pakketlijst.remove(p);
-                        pakketlijst.add(new Pakket());
-                        System.out.println("Pakketten vol!");
+                        if (a.getHoogte() < 10)
+                        {
+                            p.verwijder(a);
+                            a.setGeplaatst(false);
+                        }
                     }
 
                 }
@@ -161,7 +137,6 @@ public class VolledigeEnummeratie
                 gevuldePakketten++;
             }
         }
-        gevuldePakketten = gevuldePakketten + vollePakketten.size();
 
         return gevuldePakketten;
 
@@ -173,7 +148,9 @@ public class VolledigeEnummeratie
         if (i < record)
         {
             record = i;
-            recordPakketLijst = pakketlijst;
+            recordPakketLijst.addAll(pakketlijst);
+
+            resultaatNaarModel();
             System.out.println("Nieuw Record, inhoud per pakket");
             for (Pakket p : recordPakketLijst)
             {
@@ -188,5 +165,24 @@ public class VolledigeEnummeratie
             }
         }
 
+    }
+
+    public void resultaatNaarModel()
+    {
+        int teller = 0;
+        int som = 0;
+        for (Pakket p : recordPakketLijst)
+        {
+            if (p.getOvergeblevenHoogte() < p.getHoogte())
+            {
+                int percentage = (10 - p.getOvergeblevenHoogte()) * 100 / 10;
+                teller++;
+                som = som + percentage;
+            }
+        }
+
+        int gemiddelde = som / teller;
+
+        scherm.addResultaten("Volledige Enumeratie", teller, artikellijst.size(), gemiddelde);
     }
 }

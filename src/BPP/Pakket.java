@@ -13,12 +13,12 @@ public class Pakket
         inhoudPakket = new ArrayList<>();
         hoogte = 10;
     }
-    
+
     public Pakket(int i)
     {
         this();
         nummerPakket = i;
-        
+
     }
 
     public int getHoogte()
@@ -57,10 +57,10 @@ public class Pakket
     {
         return "Dit pakket heeft een overgebleven hoogte van " + getOvergeblevenHoogte();
     }
-    
+
     public void printInhoud()
     {
-        for(Artikel a : inhoudPakket)
+        for (Artikel a : inhoudPakket)
         {
             System.out.println(a);
         }
@@ -69,5 +69,18 @@ public class Pakket
     public int getNummer()
     {
         return nummerPakket;
+    }
+
+    public boolean isArtikelInPakket(Artikel a)
+    {
+        boolean returnBoolean = false;
+        for (Artikel aa : inhoudPakket)
+        {
+            if (a.equals(aa))
+            {
+                returnBoolean = true;
+            }
+        }
+        return returnBoolean;
     }
 }

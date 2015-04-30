@@ -2,7 +2,7 @@ package BPP;
 
 import java.util.ArrayList;
 
-public class AlmostWorst
+public class AlmostWorst extends Algoritme
 {
 
     private Scherm scherm;
@@ -10,19 +10,18 @@ public class AlmostWorst
     private ArrayList<Artikel> artikellijst;
     private ArrayList<Pakket> actievePakketten;
     private ArrayList<Pakket> vollePakketten;
-    private ArrayList<String> richtingArray;
-    private int hoeveelsteContainer = 0;
-    private Pakket huidigeContainer;
-
+    private ArrayList<ArrayList<String>> actiePerArtikel;
+    
     public AlmostWorst(ArrayList<Artikel> pl, Scherm scherm)
     {
         artikellijst = new ArrayList<>();
         actievePakketten = new ArrayList<>();
         vollePakketten = new ArrayList<>();
-        richtingArray = new ArrayList<>();
-
+        actiePerArtikel = new ArrayList<>();
+        
         this.scherm = scherm;
 
+        // Twee nieuwe pakketten maken
         actievePakketten.add(new Pakket());
         actievePakketten.add(new Pakket());
 
@@ -32,46 +31,57 @@ public class AlmostWorst
 
     public void vul()
     {
+        ArrayList<String> actiesVanDitArtikel;
         for (Artikel a : artikellijst)
         {
+            actiesVanDitArtikel = new ArrayList<>();
+            
             if (actievePakketten.get(0).getOvergeblevenHoogte() >= actievePakketten.get(1).getOvergeblevenHoogte())
             {
                 if (actievePakketten.get(0).getOvergeblevenHoogte() >= a.getHoogte())
                 {
+                    // Wanneer artikel in de linker container past -> plaatsen
                     actievePakketten.get(0).voegArtikelToe(a);
-                    richtingArray.add("Links");
+                    actiesVanDitArtikel.add("naarLinks");
                 }
                 else
                 {
-                    vollePakketten.add(actievePakketten.get(0));
-                    actievePakketten.set(0, new Pakket());
-                    System.out.println("Nieuwe container links");
-                    actievePakketten.get(0).voegArtikelToe(a);
-                    System.out.println("links");
+                    // Linker container had meer ruimte over dan de rechter,
+                    // door bovenstaande if-statement weet je dat hij niet in 
+                    // de linker container pastte, dus past hij ook niet in de rechter.
+                    // In het rechter pakket is volst, dus die vervang je.
+                    vollePakketten.add(actievePakketten.get(1));
+                    actievePakketten.set(1, new Pakket());
+                    actiesVanDitArtikel.add("nieuwRechts");
+                    
+                    
+                    // Je weet nu dat de rechtercontainer nieuw is, dus kan het pakket in de
+                    // rechter container.
+                    actievePakketten.get(1).voegArtikelToe(a);
+                    actiesVanDitArtikel.add("naarRechts");
                 }
             }
             else
             {
                 if (actievePakketten.get(1).getOvergeblevenHoogte() >= a.getHoogte())
                 {
+                    // Zelfde geldt als er meer ruimte over is in de rechter container.
                     actievePakketten.get(1).voegArtikelToe(a);
-                    richtingArray.add("Rechts");
+                    actiesVanDitArtikel.add("naarRechts");
                 }
                 else
                 {
-                    vollePakketten.add(actievePakketten.get(1));
-                    actievePakketten.set(1, new Pakket());
-                    System.out.println("Nieuwe container rechts");
-                    actievePakketten.get(1).voegArtikelToe(a);
-                    System.out.println("rechts");
+                    vollePakketten.add(actievePakketten.get(0));
+                    actievePakketten.set(0, new Pakket());
+                    actiesVanDitArtikel.add("nieuwLinks");
+                    actievePakketten.get(0).voegArtikelToe(a);
+                    actiesVanDitArtikel.add("naarLinks");
                 }
             }
-
+            actiePerArtikel.add(actiesVanDitArtikel);
+            
         }
-        printResultaat();
-        System.out.println("&&&&&&&");
-        berekenResultaten();
-
+        resultaatNaarModel();
     }
 
     public void printResultaat()
@@ -90,15 +100,9 @@ public class AlmostWorst
             p.printInhoud();
             System.out.println("-----------------------------------------------");
         }
-        System.out.println("]]]]]]]]]]]]]]");
-        for (String s : richtingArray)
-        {
-            System.out.println(s);
-        }
-
     }
 
-    public void berekenResultaten()
+    public void resultaatNaarModel()
     {
         int teller = 0;
         int som = 0;
@@ -120,6 +124,11 @@ public class AlmostWorst
         int gemiddelde = som / teller;
 
         scherm.addResultaten("Almost Worst", teller, artikellijst.size(), gemiddelde);
+    }
+    
+    public ArrayList<ArrayList<String>> getActiePerArtikel()
+    {
+        return actiePerArtikel;
     }
 
 }
