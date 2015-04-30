@@ -48,13 +48,15 @@ public class AlmostWorst
                 if (actievePakketten.get(0).getOvergeblevenHoogte() >= a.getHoogte())
                 {
                     actievePakketten.get(0).voegArtikelToe(a);
-                    richtingArray.add("Rechts");
+                    richtingArray.add("Links");
                 }
                 else
                 {
                     vollePakketten.add(actievePakketten.get(0));
                     actievePakketten.set(0, new Pakket());
                     System.out.println("Nieuwe container links");
+                    actievePakketten.get(0).voegArtikelToe(a);
+                    System.out.println("links");
                 }
             }
             else
@@ -69,11 +71,14 @@ public class AlmostWorst
                     vollePakketten.add(actievePakketten.get(1));
                     actievePakketten.set(1, new Pakket());
                     System.out.println("Nieuwe container rechts");
+                    actievePakketten.get(1).voegArtikelToe(a);
+                    System.out.println("rechts");
                 }
             }
 
         }
         printResultaat();
+        System.out.println("&&&&&&&");
         berekenResultaten();
 
     }
@@ -94,6 +99,7 @@ public class AlmostWorst
             p.printInhoud();
             System.out.println("-----------------------------------------------");
         }
+        System.out.println("]]]]]]]]]]]]]]");
         for (String s : richtingArray)
         {
             System.out.println(s);
