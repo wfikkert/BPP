@@ -174,7 +174,6 @@ public class Scherm extends JFrame implements ActionListener
         model2.addColumn("Aantal pakketten");
         model2.addColumn("Aantal artikelen");
         model2.addColumn("Pakketten gemiddeld % gevuld");
-       
 
         //resultatenlijst.getColumn("Artikelnr.").setMaxWidth(100);
         resultatenlijst.setEnabled(false);
@@ -216,7 +215,7 @@ public class Scherm extends JFrame implements ActionListener
 
         model2.addRow(new Object[]
         {
-            "" + a + "", "" + b + "","" + c + "", "" + d + "",
+            "" + a + "", "" + b + "", "" + c + "", "" + d + "",
         });
 
     }
@@ -293,12 +292,13 @@ public class Scherm extends JFrame implements ActionListener
             }
             else if (keuze == 1)
             {
-                SimpelGretig gr = new SimpelGretig(artikellijst,this);
+                SimpelGretig gr = new SimpelGretig(artikellijst, this);
                 gr.vul();
             }
             else if (keuze == 2)
             {
-
+                AlmostWorst aw = new AlmostWorst(artikellijst, this);
+                aw.vul();
             }
 
 //            int aantalJtable = jtArtikellijst.getSize();
