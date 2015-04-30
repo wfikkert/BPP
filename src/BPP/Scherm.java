@@ -48,7 +48,7 @@ public class Scherm extends JFrame implements ActionListener
         jpLinks.add(tp);
 
         // Rechtervak verdelen in 4 rijen (bij 1)
-        jpRechts.setLayout(new GridLayout(5, 1));
+        jpRechts.setLayout(new GridLayout(4, 1));
 
         // Rij 1 van het rechtervak met invulling ervan, verdelen in 2 rijen met 1 kolom
         JPanel jpArtikelSelectie = new JPanel();
@@ -294,11 +294,21 @@ public class Scherm extends JFrame implements ActionListener
             {
                 SimpelGretig gr = new SimpelGretig(artikellijst, this);
                 gr.vul();
+
+                for (int nummerVanPakketArray = 0; nummerVanPakketArray < gr.getActiePerArtikel().size(); nummerVanPakketArray++)
+                {
+                    System.out.println("Handelingen pakket " + (nummerVanPakketArray + 1) + ":");
+                    for (String s : gr.getActiePerArtikel().get(nummerVanPakketArray))
+                    {
+                        System.out.println(s);
+                    }
+                }
             }
             else if (keuze == 2)
             {
                 AlmostWorst aw = new AlmostWorst(artikellijst, this);
                 aw.vul();
+
             }
 
 //            int aantalJtable = jtArtikellijst.getSize();

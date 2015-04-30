@@ -10,17 +10,13 @@ public class SimpelGretig extends Algoritme
     private ArrayList<Artikel> artikellijst;
     private ArrayList<Pakket> actievePakketten;
     private ArrayList<Pakket> vollePakketten;
-    private ArrayList<String> richtingArray;
     private ArrayList<ArrayList<String>> actiePerArtikel;
-    private int hoeveelsteContainer = 0;
-    private Pakket huidigeContainer;
 
     public SimpelGretig(ArrayList<Artikel> pl, Scherm scherm)
     {
         artikellijst = new ArrayList<>();
         actievePakketten = new ArrayList<>();
         vollePakketten = new ArrayList<>();
-        richtingArray = new ArrayList<>();
         actiePerArtikel = new ArrayList<>();
 
         this.scherm = scherm;
@@ -34,22 +30,22 @@ public class SimpelGretig extends Algoritme
 
     public void vul()
     {
+        ArrayList<String> actiesVanDitArtikel;
         for (Artikel a : artikellijst)
         {
-            ArrayList<String> actiesVanDitArtikel = new ArrayList<>();
+            actiesVanDitArtikel = new ArrayList<>();
+
             if (actievePakketten.get(0).getOvergeblevenHoogte() >= a.getHoogte())
             {
                 actievePakketten.get(0).voegArtikelToe(a);
-                richtingArray.add("Links");
                 actiesVanDitArtikel.add("naarLinks");
-                
+
             }
             else
             {
                 if (actievePakketten.get(1).getOvergeblevenHoogte() >= a.getHoogte())
                 {
                     actievePakketten.get(1).voegArtikelToe(a);
-                    richtingArray.add("Rechts");
                     actiesVanDitArtikel.add("naarRechts");
                 }
                 else
@@ -62,7 +58,7 @@ public class SimpelGretig extends Algoritme
                         vollePakketten.add(actievePakketten.get(0));
 
                         actievePakketten.set(0, new Pakket());
-                        System.out.println("nieuwe container links");
+
                         actiesVanDitArtikel.add("nieuwLinks");
                     }
                     else
@@ -70,29 +66,25 @@ public class SimpelGretig extends Algoritme
                         vollePakketten.add(actievePakketten.get(1));
 
                         actievePakketten.set(1, new Pakket());
-                        System.out.println("nieuwe container rechts");
+
                         actiesVanDitArtikel.add("nieuwRechts");
                     }
 
                     if (actievePakketten.get(0).getOvergeblevenHoogte() >= a.getHoogte())
                     {
                         actievePakketten.get(0).voegArtikelToe(a);
-                        richtingArray.add("Links");
                         actiesVanDitArtikel.add("naarLinks");
                     }
                     else if (actievePakketten.get(1).getOvergeblevenHoogte() >= a.getHoogte())
                     {
                         actievePakketten.get(1).voegArtikelToe(a);
-                        richtingArray.add("Rechts");
                         actiesVanDitArtikel.add("naarRechts");
                     }
                 }
-                actiePerArtikel.add(actiesVanDitArtikel);
-            }
-        }
-        printResultaat();
-        berekenResultaten();
 
+            }
+            actiePerArtikel.add(actiesVanDitArtikel);
+        }
     }
 
     public void printResultaat()
@@ -111,11 +103,6 @@ public class SimpelGretig extends Algoritme
             p.printInhoud();
             System.out.println("-----------------------------------------------");
         }
-        for (String s : richtingArray)
-        {
-            System.out.println(s);
-        }
-
     }
 
     public void berekenResultaten()
@@ -137,11 +124,11 @@ public class SimpelGretig extends Algoritme
                 som = som + percentage;
             }
         }
-        int gemiddelde = som / teller ;
+        int gemiddelde = som / teller;
 
         scherm.addResultaten("Simpel Gretig", teller, artikellijst.size(), gemiddelde);
     }
-    
+
     public ArrayList<ArrayList<String>> getActiePerArtikel()
     {
         return actiePerArtikel;
