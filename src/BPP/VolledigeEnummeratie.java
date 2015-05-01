@@ -12,6 +12,7 @@ public class VolledigeEnummeratie
     private int record;
     private int mogelijkheid = 0;
     private boolean besteGevonden;
+    private int bezigInt;
 
     public VolledigeEnummeratie(ArrayList<Artikel> pl, Scherm scherm)
     {
@@ -19,6 +20,7 @@ public class VolledigeEnummeratie
         pakketlijst = new ArrayList<>();
         recordPakketLijst = new ArrayList<>();
         vollePakketten = new ArrayList<>();
+        bezigInt = 0;
 
         artikellijst = pl;
         this.scherm = scherm;
@@ -42,36 +44,14 @@ public class VolledigeEnummeratie
 
             // Kijken hoeveel pakketten er gevuld zijn met deze mogelijkheid
             int gevuldePakketten = aantalGevuld();
-
-            // Lijn aan het begin van een container
-            System.out.println("______________________________________________________");
-            System.out.println("Combinatie: " + mogelijkheid);
-            System.out.println("______________________________________________________");
-            System.out.println("Record aantal pakketten: " + record);
-            System.out.println(" Huidig aantal gevulde pakketten: " + gevuldePakketten);
-
             // Checken of het een record is
             checkRecord(gevuldePakketten);
 
-            // Stippellijn onder record en huidig gevulde pakketten
-            System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - -");
-
-            for (Pakket p : recordPakketLijst)
-            {
-                System.out.println("PAKKETTEN: " + p.getNummer());
-                System.out.println("Inhoud");
-                int artikelnr = 1;
-                for (Artikel a : p.getInhoudPakket())
-                {
-                    System.out.println("Artikel " + artikelnr + " hoogte: " + a.getHoogte());
-                    artikelnr++;
-                }
-            }
         }
 
         for (Artikel a : artikellijst)
         {
-            if (!a.isGeplaatst())
+            if (!a.isGeplaatst() && mogelijkheid <= 10000)
             {
                 for (Pakket p : pakketlijst)
                 {
@@ -83,11 +63,8 @@ public class VolledigeEnummeratie
                         a.setGeplaatst(true);
                         vul();
 
-                        if (a.getHoogte() < 10)
-                        {
-                            p.verwijder(a);
-                            a.setGeplaatst(false);
-                        }
+                        p.verwijder(a);
+                        a.setGeplaatst(false);
                     }
 
                 }
@@ -148,19 +125,23 @@ public class VolledigeEnummeratie
         if (i < record)
         {
             record = i;
-            recordPakketLijst.addAll(pakketlijst);
+            recordPakketLijst = pakketlijst;
 
             resultaatNaarModel();
+
             System.out.println("Nieuw Record, inhoud per pakket");
             for (Pakket p : recordPakketLijst)
             {
-                System.out.println("Pakket: " + p.getNummer());
-                System.out.println("Inhoud");
-                int artikelnr = 1;
-                for (Artikel a : p.getInhoudPakket())
+                if (p.getOvergeblevenHoogte() < p.getHoogte())
                 {
-                    System.out.println("Pakket " + artikelnr + " hoogte: " + a.getHoogte());
-                    artikelnr++;
+                    System.out.println("Pakket: " + p.getNummer());
+                    System.out.println("Inhoud");
+                    int artikelnr = 1;
+                    for (Artikel a : p.getInhoudPakket())
+                    {
+                        System.out.println("Pakket " + artikelnr + " hoogte: " + a.getHoogte());
+                        artikelnr++;
+                    }
                 }
             }
         }
@@ -183,6 +164,7 @@ public class VolledigeEnummeratie
 
         int gemiddelde = som / teller;
 
-        scherm.addResultaten("Volledige Enumeratie", teller, artikellijst.size(), gemiddelde);
+        scherm.addResultaten("Volledige Enumeratie", teller, recordPakketLijst.size(), gemiddelde);
+
     }
 }
