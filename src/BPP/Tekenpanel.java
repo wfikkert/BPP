@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
@@ -28,6 +30,7 @@ public class Tekenpanel extends JPanel
     {
         int linkerBox = 10;
         int rechterBox = 50;
+        int xBox = 10;
         g.setFont(new Font("SansSerif", Font.BOLD, 26));
         
         super.paintComponent(g);
@@ -46,6 +49,24 @@ public class Tekenpanel extends JPanel
         g.drawRect(490, 530, 120, 130);
         g.drawString(linkerBox + " %",40, 600);
         g.drawString(rechterBox + " %",520, 600);
+        
+        g.setColor(Color.red);
+        g.fillRect(268, xBox, 90, 90);
+        
+        
+    }
+    
+    ActionListener counter = new ActionListener() {
+			public void actionPerformed(ActionEvent evt) 
+			{ 
+			      repaint();
+			      x++;
+			}};
+		 new Timer(delay, counter).start();
+    public void maakArtikels(Graphics g, String s )
+    {
+        
+        
     }
 
 }
