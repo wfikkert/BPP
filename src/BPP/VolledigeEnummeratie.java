@@ -11,8 +11,6 @@ public class VolledigeEnummeratie
     private ArrayList<Pakket> recordPakketLijst;
     private int record;
     private int mogelijkheid = 0;
-    private boolean besteGevonden;
-    private int bezigInt;
 
     public VolledigeEnummeratie(ArrayList<Artikel> pl, Scherm scherm)
     {
@@ -20,16 +18,16 @@ public class VolledigeEnummeratie
         pakketlijst = new ArrayList<>();
         recordPakketLijst = new ArrayList<>();
         vollePakketten = new ArrayList<>();
-        bezigInt = 0;
-
         artikellijst = pl;
         this.scherm = scherm;
 
+        // Voor elk artikel in iedergeval een pakket aanmaken (Worst scenario)
         for (Artikel a : artikellijst)
         {
             pakketlijst.add(new Pakket());
         }
 
+        // Stel: oplossing == worst scenario, dan moet hij dit wel als record zien.
         record = artikellijst.size() + 1;
 
     }
@@ -68,23 +66,6 @@ public class VolledigeEnummeratie
                     }
 
                 }
-
-//                for (Container c : artikellijst)
-//                {
-//                    
-//                    if (c.getOvergeblevenHoogte() >= p.getHoogte())
-//                    {
-//
-//                        c.voegPakketToe(p);
-//                        p.setGeplaatst(true);
-//                        vul();
-//                        
-//                        
-//                        c.verwijder(p);
-//                        p.setGeplaatst(false);
-//                    }
-//                    
-//                }
             }
 
         }

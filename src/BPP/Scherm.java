@@ -297,6 +297,9 @@ public class Scherm extends JFrame implements ActionListener
                 SimpelGretig gr = new SimpelGretig(artikellijst, this);
                 gr.vul();
                 printHandelingPerArtikel(gr);
+                tp.voegArrayToe(gr.getActiePerArtikel());
+                tp.test();
+
             }
             else if (keuze == 2)
             {
