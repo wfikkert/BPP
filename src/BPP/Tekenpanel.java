@@ -39,6 +39,8 @@ public class Tekenpanel extends JPanel
     @Override
     public void paintComponent(Graphics g)
     {
+        super.paintComponent(g);
+        
         this.g = g;
 
         int linkerBox = 10;
@@ -46,7 +48,7 @@ public class Tekenpanel extends JPanel
 
         g.setFont(new Font("SansSerif", Font.BOLD, 26));
 
-        super.paintComponent(g);
+        
         setBackground(Color.GRAY);
         g.setColor(Color.blue);
         g.fillRect(238, 10, 150, 400);
@@ -77,46 +79,24 @@ public class Tekenpanel extends JPanel
 
     }
 
-    public void test()
+    public void setX(int x)
     {
-        run = true;
-        while (run)
-        {
-            for (int iHoofdArray = 0; iHoofdArray < actiePerArtikel.size(); iHoofdArray++)
-            {
-                for (int iSubArray = 0; iSubArray < actiePerArtikel.get(iHoofdArray).size(); iSubArray++)
-                {
-                    teller = 0;
-                    if (actiePerArtikel.get(iHoofdArray).get(iSubArray).equals("naarLinks") || actiePerArtikel.get(iHoofdArray).get(iSubArray).equals("naarRechts"))
-                    {
-                        while (teller <= 100)
-                        {
-                            x++;
-
-                            try
-                            {
-                                Thread.sleep(1000);
-
-                            }
-                            catch (InterruptedException ex)
-                            {
-                                //do stuff    
-                            }
-                            revalidate();
-                            repaint();
-                            System.out.println("REPAINT");
-                            teller++;
-                        }
-                    }
-
-                }
-            }
-            run = false;
-
-        }
-
+        this.x = x; 
     }
-
+    public int getX()
+    {
+        return x;
+    }
+   
+    public void setTeller(int teller)
+    {
+        this.teller = teller;
+    }
+    
+    public int getTeller()
+    {
+        return teller;
+    }
     public void voegArrayToe(ArrayList<ArrayList<String>> a)
     {
         actiePerArtikel = a;
