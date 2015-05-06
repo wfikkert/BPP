@@ -13,8 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
-import javax.swing.Timer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -23,32 +26,36 @@ import javax.swing.Timer;
 public class Tekenpanel extends JPanel
 {
 
-    private ArrayList<ArrayList<String>> actiePerArtikel;
     private int x = 15;
     private int teller = 1;
-    private Graphics g;
-    private boolean run;
+
+    private int rectX = 268;
+    private int rectY = 15;
+
+    private Timer timer;
+    private Timer timer2;
+    private Timer eindTimer;
+    private boolean isKlaar = false;
+
+    private Graphics graphicsG;
 
     public Tekenpanel()
     {
         this.setPreferredSize(new Dimension(625, 670));
-        actiePerArtikel = new ArrayList<>();
 
     }
 
     @Override
-    public void paintComponent(Graphics g)
+    public void paint(Graphics g)
     {
         super.paintComponent(g);
-        
-        this.g = g;
+        graphicsG = g;
 
         int linkerBox = 10;
         int rechterBox = 50;
 
         g.setFont(new Font("SansSerif", Font.BOLD, 26));
 
-        
         setBackground(Color.GRAY);
         g.setColor(Color.blue);
         g.fillRect(238, 10, 150, 400);
@@ -65,41 +72,97 @@ public class Tekenpanel extends JPanel
         g.drawString(linkerBox + " %", 40, 600);
         g.drawString(rechterBox + " %", 520, 600);
 
-        if (teller > 1)
-        {
-            g.clearRect(268, x - 1, 90, 90);
-            System.out.println("Clear rect: 258, " + (x - 1) + ", 90, 90");
-            g.setColor(Color.blue);
-            g.fillRect(268, x - 1, 90, 90);
-            System.out.println("Fill rect blue: 258, " + (x - 1) + ", 90, 90");
-        }
         g.setColor(Color.red);
-        g.fillRect(268, x, 90, 90);
-        System.out.println("Fill rect red: 258, " + (x) + ", 90, 90");
+        g.fillRect(rectX, rectY, 90, 90);
 
     }
 
-    public void setX(int x)
+    public void artikelAnimatie(String s)
     {
-        this.x = x; 
-    }
-    public int getX()
-    {
-        return x;
-    }
-   
-    public void setTeller(int teller)
-    {
-        this.teller = teller;
-    }
-    
-    public int getTeller()
-    {
-        return teller;
-    }
-    public void voegArrayToe(ArrayList<ArrayList<String>> a)
-    {
-        actiePerArtikel = a;
+
+        timer = new Timer();
+        timer2 = new Timer();
+        eindTimer = new Timer();
+
+        if (s.equals("naarLinks"))
+        {
+            timer.scheduleAtFixedRate(new naarBeneden(), 10, 10);
+            timer2.scheduleAtFixedRate(new naarLinks(), 3500, 10);
+
+        }
+        else if (s.equals("naarRechts"))
+        {
+            timer.scheduleAtFixedRate(new naarBeneden(), 10, 10);
+            timer.scheduleAtFixedRate(new naarRechts(), 10, 10);
+        }
+
+        eindTimer.scheduleAtFixedRate(new opnieuwBeginnen(), 10000, 10);
+
     }
 
+    class naarBeneden extends TimerTask
+    {
+        private int maxY = 375;
+
+        public void run()
+        {
+
+            isKlaar = false;
+            rectY = rectY + 1;
+            repaint();
+            System.out.println(" y is " + rectY);
+            if (rectY >= maxY)
+            {
+                timer.cancel(); //Terminate the thread
+            }
+        }
+    }
+
+    class naarLinks extends TimerTask
+    {
+        private int maxX = 30;
+
+        public void run()
+        {
+
+            isKlaar = false;
+            rectX = rectX - 1;
+            repaint();
+            System.out.println(" x is " + rectX);
+            if (rectX <= maxX)
+            {
+                timer2.cancel(); //Terminate the thread
+            }
+        }
+    }
+
+    class naarRechts extends TimerTask
+    {
+        private int maxX = 450;
+
+        public void run()
+        {
+
+            isKlaar = false;
+            rectX = rectX + 1;
+            repaint();
+            System.out.println(" x is " + rectX);
+            if (rectX >= maxX)
+            {
+                timer.cancel(); //Terminate the thread
+            }
+        }
+    }
+
+    class opnieuwBeginnen extends TimerTask
+    {
+
+        public void run()
+        {
+            rectX = 268;
+            rectY = 15;
+            repaint();
+            eindTimer.cancel();
+        }
+    }
 }

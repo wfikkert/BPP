@@ -297,7 +297,7 @@ public class Scherm extends JFrame implements ActionListener
                 SimpelGretig gr = new SimpelGretig(artikellijst, this);
                 gr.vul();
                 printHandelingPerArtikel(gr);
-                tekenArtikelen(gr.getActiePerArtikel());
+                aanleveringVoorAnimatie(gr.getActiePerArtikel());
 
             }
             else if (keuze == 2)
@@ -359,41 +359,17 @@ public class Scherm extends JFrame implements ActionListener
 
     }
 
-    public void tekenArtikelen(ArrayList<ArrayList<String>> a)
+    public void aanleveringVoorAnimatie(ArrayList<ArrayList<String>> a)
     {
-
         for (int iHoofdArray = 0; iHoofdArray < a.size(); iHoofdArray++)
         {
             for (int iSubArray = 0; iSubArray < a.get(iHoofdArray).size(); iSubArray++)
             {
-                tp.setTeller(0);
-                if (a.get(iHoofdArray).get(iSubArray).equals("naarLinks") || a.get(iHoofdArray).get(iSubArray).equals("naarRechts"))
-                {
-                    while (tp.getTeller() <= 100)
-                    {
-                        int nieuwX = tp.getX() + 1;
-                        tp.setX(nieuwX);
-
-                        try
-                        {
-                            Thread.sleep(1000);
-
-                        }
-                        catch (InterruptedException ex)
-                        {
-                            //do stuff    
-                        }
-                        tp.revalidate();
-                        tp.repaint();
-                        System.out.println("REPAINT");
-                        int nieuwTeller = tp.getTeller() + 1;
-                        tp.setTeller(nieuwTeller);
-                    }
-                }
+                tp.artikelAnimatie(a.get(iHoofdArray).get(iSubArray));
 
             }
-        }
 
+        }
     }
 
 }
