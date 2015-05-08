@@ -35,6 +35,7 @@ public class Tekenpanel extends JPanel
     private Timer timer;
     private Timer timer2;
     private Timer eindTimer;
+    private int tijd = 0;
     private boolean isKlaar = false;
 
     private Graphics graphicsG;
@@ -86,17 +87,23 @@ public class Tekenpanel extends JPanel
 
         if (s.equals("naarLinks"))
         {
-            timer.scheduleAtFixedRate(new naarBeneden(), 10, 10);
-            timer2.scheduleAtFixedRate(new naarLinks(), 3500, 10);
+
+            timer.scheduleAtFixedRate(new naarBeneden(), tijd, 1000);
+            tijd = tijd + 3500;
+
+            timer2.scheduleAtFixedRate(new naarLinks(), tijd, 1000);
 
         }
         else if (s.equals("naarRechts"))
         {
-            timer.scheduleAtFixedRate(new naarBeneden(), 10, 10);
-            timer.scheduleAtFixedRate(new naarRechts(), 10, 10);
+            
+            timer.scheduleAtFixedRate(new naarBeneden(), tijd, 100);
+            tijd = tijd + 3500;
+            timer.scheduleAtFixedRate(new naarRechts(), 10, 100);
         }
 
-        eindTimer.scheduleAtFixedRate(new opnieuwBeginnen(), 10000, 10);
+        tijd = tijd + 2500;
+//        eindTimer.scheduleAtFixedRate(new opnieuwBeginnen(), tijd, 10);
 
     }
 
@@ -108,8 +115,9 @@ public class Tekenpanel extends JPanel
         {
 
             isKlaar = false;
-            rectY = rectY + 1;
+            rectY = rectY + 45;
             repaint();
+            System.out.println("Naar beneden");
             System.out.println(" y is " + rectY);
             if (rectY >= maxY)
             {
@@ -126,8 +134,9 @@ public class Tekenpanel extends JPanel
         {
 
             isKlaar = false;
-            rectX = rectX - 1;
+            rectX = rectX - 45;
             repaint();
+            System.out.println("Naar links");
             System.out.println(" x is " + rectX);
             if (rectX <= maxX)
             {
@@ -144,8 +153,9 @@ public class Tekenpanel extends JPanel
         {
 
             isKlaar = false;
-            rectX = rectX + 1;
+            rectX = rectX + 45;
             repaint();
+            System.out.println("Naar rechts");
             System.out.println(" x is " + rectX);
             if (rectX >= maxX)
             {
