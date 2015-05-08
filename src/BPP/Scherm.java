@@ -297,8 +297,6 @@ public class Scherm extends JFrame implements ActionListener
             {
                 SimpelGretig gr = new SimpelGretig(artikellijst, this);
                 gr.vul();
-                printHandelingPerArtikel(gr);
-//                tp.setTimers();
                 aanleveringVoorAnimatie(gr.getActiePerArtikel());
 
             }
@@ -306,15 +304,9 @@ public class Scherm extends JFrame implements ActionListener
             {
                 AlmostWorst aw = new AlmostWorst(artikellijst, this);
                 aw.vul();
-                System.out.println("PRINT AW");
-                printHandelingPerArtikel(aw);
+                aanleveringVoorAnimatie(aw.getActiePerArtikel());
 
             }
-
-//            int aantalJtable = jtArtikellijst.getSize();
-//            resultatenlijst.setValueAt(aantalJtable, 0, 1);
-//            SimpelGretig sg = new SimpelGretig(artikellijst);
-//            sg.berekenVolgorde();
         }
         else if (e.getSource() == stopSimulatie)
         {
@@ -367,10 +359,11 @@ public class Scherm extends JFrame implements ActionListener
         {
             Timer timer = new Timer();
             Timer timer2 = new Timer();
+            Timer timer3 = new Timer();
             Timer eindTimer = new Timer();
             for (int iSubArray = 0; iSubArray < a.get(iHoofdArray).size(); iSubArray++)
             {
-                tp.artikelAnimatie(a.get(iHoofdArray).get(iSubArray), timer, timer2, eindTimer);
+                tp.artikelAnimatie(a.get(iHoofdArray).get(iSubArray), timer, timer2, timer3, eindTimer, artikellijst.get(iHoofdArray));
 
             }
 
