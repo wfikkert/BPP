@@ -131,26 +131,26 @@ public class Tekenpanel extends JPanel
         if (s.equals("naarLinks"))
         {
 
-            t.scheduleAtFixedRate(new naarBeneden(t, a), tijd, 10);
-            tijd = tijd + 4000;
+            t.scheduleAtFixedRate(new naarBeneden(t, a), tijd, 2);
+            tijd = tijd + 1000;
 
-            t2.scheduleAtFixedRate(new naarLinks(t2, a), tijd, 10);
-            tijd = tijd + 3000;
+            t2.scheduleAtFixedRate(new naarLinks(t2, a), tijd, 2);
+            tijd = tijd + 1000;
 
             et.scheduleAtFixedRate(new opnieuwBeginnen(et), tijd, 1);
-            tijd = tijd + 2500;
+            tijd = tijd + 500;
 
         }
         else if (s.equals("naarRechts"))
         {
 
-            t.scheduleAtFixedRate(new naarBeneden(t, a), tijd, 10);
-            tijd = tijd + 4000;
-            t2.scheduleAtFixedRate(new naarRechts(t2, a), tijd, 10);
-            tijd = tijd + 3000;
+            t.scheduleAtFixedRate(new naarBeneden(t, a), tijd, 2);
+            tijd = tijd + 1000;
+            t2.scheduleAtFixedRate(new naarRechts(t2, a), tijd, 2);
+            tijd = tijd + 1000;
 
             et.scheduleAtFixedRate(new opnieuwBeginnen(et), tijd, 1);
-            tijd = tijd + 1500;
+            tijd = tijd + 500;
 
         }
         else if (s.equals("nieuwLinks"))
