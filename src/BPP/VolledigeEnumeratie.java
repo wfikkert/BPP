@@ -2,7 +2,7 @@ package BPP;
 
 import java.util.ArrayList;
 
-public class VolledigeEnummeratie
+public class VolledigeEnumeratie
 {
     private Scherm scherm;
     private ArrayList<Artikel> artikellijst;
@@ -12,7 +12,7 @@ public class VolledigeEnummeratie
     private int record;
     private int mogelijkheid = 0;
 
-    public VolledigeEnummeratie(ArrayList<Artikel> pl, Scherm scherm)
+    public VolledigeEnumeratie(ArrayList<Artikel> pl, Scherm scherm)
     {
         artikellijst = new ArrayList<>();
         pakketlijst = new ArrayList<>();

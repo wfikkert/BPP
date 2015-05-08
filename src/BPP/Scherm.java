@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.Timer;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.TimerTask;
 import javax.swing.*;
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 import javax.swing.SpinnerNumberModel;
@@ -14,6 +15,7 @@ import javax.swing.table.*;
 public class Scherm extends JFrame implements ActionListener
 {
 
+    private JPanel jpLinks;
     private JButton artikelToevoegen;
     private JLabel jlSelectArtikelTitel;
     private JButton stopSimulatie;
@@ -37,15 +39,15 @@ public class Scherm extends JFrame implements ActionListener
         setSize(1280, 720);
         setLayout(new GridLayout(1, 2));
 
-        //Artikellijst aanmaken
+        //Artikellijst arraylist aanmaken
         artikellijst = new ArrayList<>();
 
         // Linker en rechterpaneel aanmaken
-        JPanel jpLinks = new JPanel();
+        jpLinks = new JPanel();
         JPanel jpRechts = new JPanel();
 
         // Tekenpanel
-        tp = new Tekenpanel();
+        tp = new Tekenpanel(this);
         jpLinks.add(tp);
 
         // Rechtervak verdelen in 4 rijen (bij 1)
@@ -66,7 +68,7 @@ public class Scherm extends JFrame implements ActionListener
         JPanel jpSelectArtikelButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         // Nummerspinner en 'Genereer artikelten' button aanmaken en toevoegen aan JPannel
-        aantal = new JSpinner(new SpinnerNumberModel(0, 0, null, 1));
+        aantal = new JSpinner(new SpinnerNumberModel(1, 0, null, 1));
         genereerArtikelen = new JButton("Genereer artikel");
         jpSelectArtikelButtons.add(aantal);
         jpSelectArtikelButtons.add(genereerArtikelen);
@@ -155,6 +157,7 @@ public class Scherm extends JFrame implements ActionListener
 
         jpActieButtons.add(startSimulatie);
         jpActieButtons.add(stopSimulatie);
+        disableStopButton();
 
         jpSimulatorActies.add(jpActieButtons, BorderLayout.CENTER);
 
@@ -286,34 +289,97 @@ public class Scherm extends JFrame implements ActionListener
         }
         else if (e.getSource() == startSimulatie)
         {
+            // Keuze algoritme ophalen
             int keuze = algoLijst.getSelectedIndex();
-            if (keuze == 0)
-            {
-                VolledigeEnummeratie ve = new VolledigeEnummeratie(artikellijst, this);
-                ve.vul();
 
-            }
-            else if (keuze == 1)
-            {
-                SimpelGretig gr = new SimpelGretig(artikellijst, this);
-                gr.vul();
-                aanleveringVoorAnimatie(gr.getActiePerArtikel());
+            // Zodra op start is gedrukt, startknop disablen en stop knop enablen
+            startSimulatie.setEnabled(false);
+            stopSimulatie.setEnabled(true);
 
-            }
-            else if (keuze == 2)
+            try
             {
-                AlmostWorst aw = new AlmostWorst(artikellijst, this);
-                aw.vul();
-                aanleveringVoorAnimatie(aw.getActiePerArtikel());
+                // Eerst refreshen van tekenpanel
+                // Dit omdat er anders nog oude data in staat.
+                jpLinks.remove(0);
+                tp = new Tekenpanel(this);
+                jpLinks.add(tp);
+                revalidate();
 
+                if (keuze == 0)
+                {
+                    jpLinks.remove(0);
+                    JPanel volEnum = new JPanel();
+                    volEnum.setLayout(new BorderLayout());
+                    volEnum.setPreferredSize(new Dimension(625, 670));
+                    JLabel nietMogelijk = new JLabel("Simulatie volgens vaste aanlevering is niet mogelijk met Volledige Enumeratie");
+                    volEnum.add(nietMogelijk, BorderLayout.CENTER);
+
+                    jpLinks.add(volEnum);
+                    revalidate();
+                    VolledigeEnumeratie ve = new VolledigeEnumeratie(artikellijst, this);
+                    ve.vul();
+                    startSimulatie.setEnabled(true);
+                    stopSimulatie.setEnabled(false);
+
+                }
+                else if (keuze == 1)
+                {
+                    SimpelGretig gr = new SimpelGretig(artikellijst, this);
+                    gr.vul();
+                    aanleveringVoorAnimatie(gr.getActiePerArtikel());
+
+                }
+                else if (keuze == 2)
+                {
+                    AlmostWorst aw = new AlmostWorst(artikellijst, this);
+                    aw.vul();
+                    aanleveringVoorAnimatie(aw.getActiePerArtikel());
+
+                }
             }
+            catch (ArithmeticException ae)
+            {
+                JOptionPane.showMessageDialog(this, "Er zijn geen artikelen meegegeven");
+                enableStartButton();
+            }
+
         }
         else if (e.getSource() == stopSimulatie)
         {
+            // Wanneer stop knop ingedrukt is, alle timers stoppen uit JPanel
+            for (TimerTask tt : tp.getTimers())
+            {
+                tt.cancel();
 
+            }
+            // Daarna JPanel refreshen en startknop enablen en stopknop disablen
+            jpLinks.remove(0);
+            tp = new Tekenpanel(this);
+            jpLinks.add(tp);
+            revalidate();
+            enableStartButton();
+            disableStopButton();
         }
+
     }
 
+    public void enableStartButton()
+    {
+        startSimulatie.setEnabled(true);
+    }
+
+    public void enableStopButton()
+    {
+        stopSimulatie.setEnabled(true);
+    }
+
+    public void disableStopButton()
+    {
+        stopSimulatie.setEnabled(false);
+    }
+
+    // lijst naar table wordt aangeroepen na het uitrekenen van de algoritmes
+    // deze converteert data van de arraylist naar een tabel
     public void lijstNaarTable()
     {
         if (artikellijst.size() > 0)
@@ -337,20 +403,6 @@ public class Scherm extends JFrame implements ActionListener
                 artikelTeller++;
             }
         }
-    }
-
-    public void printHandelingPerArtikel(Algoritme a)
-    {
-
-        for (int nummerVanPakketArray = 0; nummerVanPakketArray < a.getActiePerArtikel().size(); nummerVanPakketArray++)
-        {
-            System.out.println("Handelingen pakket " + (nummerVanPakketArray + 1) + ":");
-            for (String s : a.getActiePerArtikel().get(nummerVanPakketArray))
-            {
-                System.out.println(s);
-            }
-        }
-
     }
 
     public void aanleveringVoorAnimatie(ArrayList<ArrayList<String>> a)

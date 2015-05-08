@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BPP;
 
 import java.awt.Color;
@@ -18,14 +13,12 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.JFrame;
 
-/**
- *
- * Studentnummer: S1079295 Naam: Rik Lugtenberg Klas: ICTM2D Vak : JAVA
- */
+
 public class Tekenpanel extends JPanel
 {
-
+    private Scherm scherm;
     private int x = 15;
     private int teller = 1;
 
@@ -43,11 +36,15 @@ public class Tekenpanel extends JPanel
 
     private Graphics graphicsG;
 
-    public Tekenpanel()
+    private ArrayList<TimerTask> timers;
+
+    public Tekenpanel(Scherm scherm)
     {
+        this.scherm = scherm;
         this.setPreferredSize(new Dimension(625, 670));
         pakketLinks = new Pakket();
         pakketRechts = new Pakket();
+        timers = new ArrayList<>();
 
     }
 
@@ -57,9 +54,7 @@ public class Tekenpanel extends JPanel
         super.paintComponent(g);
         graphicsG = g;
 
-        g.setFont(new Font("SansSerif", Font.BOLD, 26));
-
-        setBackground(Color.GRAY);
+        setBackground(Color.gray);
         g.setColor(Color.blue);
         g.fillRect(238, 10, 150, 400);
         g.fillRect(10, 410, 605, 100);
@@ -67,27 +62,36 @@ public class Tekenpanel extends JPanel
         g.drawRect(238, 10, 150, 400);
         g.drawRect(10, 410, 605, 100);
 
+        // Als boolean 'linksVol' true is, wordt het pakket rood
         if (linksVol)
         {
-            g.setColor(Color.RED);
+            g.setColor(Color.red);
             g.fillRect(10, 530, 120, 130);
             g.setColor(Color.black);
+            g.setFont(new Font("SansSerif", Font.BOLD, 26));
             g.drawString("LEGEN!", 25, 600);
         }
+        
+        // Zo niet; dan groen pakket tonen met overgebleven hoogte
         else
         {
             g.setColor(Color.green);
             g.fillRect(10, 530, 120, 130);
             g.setColor(Color.black);
+            g.setFont(new Font("SansSerif", Font.BOLD, 10));
+            g.drawString("Overgebleven hoogte:", 15, 550);
+            g.setFont(new Font("SansSerif", Font.BOLD, 75));
             int getalLinks = pakketLinks.getOvergeblevenHoogte();
-            g.drawString(getalLinks + "", 50, 610);
+            g.drawString(getalLinks + "", 20, 625);
         }
 
+        // Hetzelfde voor het rechterpakket
         if (rechtsVol)
         {
-            g.setColor(Color.RED);
+            g.setColor(Color.red);
             g.fillRect(490, 530, 120, 130);
             g.setColor(Color.black);
+            g.setFont(new Font("SansSerif", Font.BOLD, 26));
             g.drawString("LEGEN!", 500, 600);
         }
         else
@@ -95,28 +99,35 @@ public class Tekenpanel extends JPanel
             g.setColor(Color.green);
             g.fillRect(490, 530, 120, 130);
             g.setColor(Color.black);
+            g.setFont(new Font("SansSerif", Font.BOLD, 10));
+            g.drawString("Overgebleven hoogte:", 495, 550);
+
+            g.setFont(new Font("SansSerif", Font.BOLD, 75));
             int getalRechts = pakketRechts.getOvergeblevenHoogte();
-            g.drawString(getalRechts + "", 535, 610);
+            g.drawString(getalRechts + "", 510, 625);
         }
 
         g.setColor(Color.black);
         g.drawRect(10, 530, 120, 130);
         g.drawRect(490, 530, 120, 130);
 
-        g.setColor(Color.red);
-        g.fillRect(rectX, rectY, 90, 90);
-        
-        g.setColor(Color.black);
-        if(artikelHoogte != 0)
+        // Het artikel wat in de doos moet, met daarin de artikelgrootte
+        if (artikelHoogte != 0)
         {
-            g.drawString(artikelHoogte + "", rectX + 35, rectY + 50);
+            g.setColor(Color.red);
+            g.fillRect(rectX, rectY, 90, 90);
+            g.setColor(Color.black);
+            g.setFont(new Font("SansSerif", Font.BOLD, 10));
+            g.drawString("Artikelhoogte:" , rectX+2, rectY + 10);
+            g.setFont(new Font("SansSerif", Font.BOLD, 75));
+            g.drawString(artikelHoogte + "", rectX + 5, rectY + 80);
         }
 
     }
 
+    // artikelAnimatie wordt aangeroepen vanuit het Scherm
     public void artikelAnimatie(String s, Timer t, Timer t2, Timer t3, Timer et, Artikel a)
     {
-
         if (s.equals("naarLinks"))
         {
 
@@ -157,6 +168,13 @@ public class Tekenpanel extends JPanel
 
     }
 
+    // Hier worden alle timers bijgehouden die aangemaakt worden
+    public ArrayList<TimerTask> getTimers()
+    {
+        return timers;
+    }
+    
+    // Hieronder alle timers als inner-classes die gekoppeld kunnen worden
     class naarBeneden extends TimerTask
     {
         private int maxY = 400;
@@ -167,6 +185,7 @@ public class Tekenpanel extends JPanel
         {
             timer = t;
             this.artikel = a;
+            timers.add(this);
         }
 
         public void run()
@@ -177,6 +196,7 @@ public class Tekenpanel extends JPanel
             repaint();
             if (rectY >= maxY)
             {
+                timers.remove(this);
                 timer.cancel(); //Terminate the thread
             }
         }
@@ -192,6 +212,8 @@ public class Tekenpanel extends JPanel
         {
             this.timer = t;
             this.artikel = a;
+            timers.add(this);
+
         }
 
         public void run()
@@ -201,6 +223,7 @@ public class Tekenpanel extends JPanel
             repaint();
             if (rectX <= maxX)
             {
+                timers.remove(this);
                 pakketLinks.voegArtikelToe(artikel);
                 timer.cancel(); //Terminate the thread
             }
@@ -217,6 +240,7 @@ public class Tekenpanel extends JPanel
         {
             this.timer = t;
             this.artikel = a;
+            timers.add(this);
         }
 
         public void run()
@@ -226,6 +250,7 @@ public class Tekenpanel extends JPanel
             repaint();
             if (rectX >= maxX)
             {
+                timers.remove(this);
                 pakketRechts.voegArtikelToe(artikel);
                 timer.cancel(); //Terminate the thread
             }
@@ -239,6 +264,7 @@ public class Tekenpanel extends JPanel
         public opnieuwBeginnen(Timer t)
         {
             this.timer = t;
+            timers.add(this);
 
         }
 
@@ -248,7 +274,13 @@ public class Tekenpanel extends JPanel
             rectY = 15;
             artikelHoogte = 0;
             repaint();
+            timers.remove(this);
             timer.cancel();
+            if (timers.size() == 0)
+            {
+                scherm.enableStartButton();
+                scherm.disableStopButton();
+            }
         }
     }
 
@@ -262,6 +294,8 @@ public class Tekenpanel extends JPanel
         {
             this.timer = t;
             this.artikel = a;
+            timers.add(this);
+
         }
 
         public void run()
@@ -276,6 +310,7 @@ public class Tekenpanel extends JPanel
                 linksVol = false;
                 pakketLinks = new Pakket();
                 repaint();
+                timers.remove(this);
                 timer.cancel();
             }
         }
@@ -291,6 +326,8 @@ public class Tekenpanel extends JPanel
         {
             this.timer = t;
             this.artikel = a;
+            timers.add(this);
+
         }
 
         public void run()
@@ -305,6 +342,7 @@ public class Tekenpanel extends JPanel
                 rechtsVol = false;
                 pakketRechts = new Pakket();
                 repaint();
+                timers.remove(this);
                 timer.cancel();
             }
         }
