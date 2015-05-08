@@ -32,11 +32,10 @@ public class Tekenpanel extends JPanel
     private int rectX = 268;
     private int rectY = 15;
 
-    private Timer timer;
-    private Timer timer2;
-    private Timer eindTimer;
+//    private Timer timer;
+//    private Timer timer2;
+//    private Timer eindTimer;
     private int tijd = 0;
-    private boolean isKlaar = false;
 
     private Graphics graphicsG;
 
@@ -60,10 +59,10 @@ public class Tekenpanel extends JPanel
         setBackground(Color.GRAY);
         g.setColor(Color.blue);
         g.fillRect(238, 10, 150, 400);
-        g.fillRect(125, 410, 375, 50);
+        g.fillRect(10, 410, 605, 100);
         g.setColor(Color.black);
         g.drawRect(238, 10, 150, 400);
-        g.drawRect(125, 410, 375, 50);
+        g.drawRect(10, 410, 605, 100);
         g.setColor(Color.green);
         g.fillRect(10, 530, 120, 130);
         g.fillRect(490, 530, 120, 130);
@@ -78,47 +77,49 @@ public class Tekenpanel extends JPanel
 
     }
 
-    public void artikelAnimatie(String s)
+    public void artikelAnimatie(String s, Timer t, Timer t2, Timer et)
     {
-
-        timer = new Timer();
-        timer2 = new Timer();
-        eindTimer = new Timer();
 
         if (s.equals("naarLinks"))
         {
 
-            timer.scheduleAtFixedRate(new naarBeneden(), tijd, 1000);
-            tijd = tijd + 3500;
+            t.scheduleAtFixedRate(new naarBeneden(t), tijd, 10);
+            tijd = tijd + 5000;
 
-            timer2.scheduleAtFixedRate(new naarLinks(), tijd, 1000);
+            t2.scheduleAtFixedRate(new naarLinks(t2), tijd, 10);
+            tijd = tijd + 5000;
 
         }
         else if (s.equals("naarRechts"))
         {
-            
-            timer.scheduleAtFixedRate(new naarBeneden(), tijd, 100);
-            tijd = tijd + 3500;
-            timer.scheduleAtFixedRate(new naarRechts(), 10, 100);
-        }
 
+            t.scheduleAtFixedRate(new naarBeneden(t), tijd, 10);
+            tijd = tijd + 5000;
+            t2.scheduleAtFixedRate(new naarRechts(t2), tijd, 10);
+            tijd = tijd + 5000;
+
+        }
+        et.scheduleAtFixedRate(new opnieuwBeginnen(et), tijd, 1);
         tijd = tijd + 2500;
-//        eindTimer.scheduleAtFixedRate(new opnieuwBeginnen(), tijd, 10);
 
     }
 
     class naarBeneden extends TimerTask
     {
-        private int maxY = 375;
+        private int maxY = 400;
+        
+        Timer timer;
+        
+        public naarBeneden(Timer t)
+        {
+            timer = t;
+        }
 
         public void run()
         {
 
-            isKlaar = false;
-            rectY = rectY + 45;
+            rectY = rectY + 1;
             repaint();
-            System.out.println("Naar beneden");
-            System.out.println(" y is " + rectY);
             if (rectY >= maxY)
             {
                 timer.cancel(); //Terminate the thread
@@ -129,34 +130,42 @@ public class Tekenpanel extends JPanel
     class naarLinks extends TimerTask
     {
         private int maxX = 30;
+        
+        Timer timer;
+        
+        public naarLinks(Timer t)
+        {
+            this.timer = t;
+        }
 
         public void run()
         {
 
-            isKlaar = false;
-            rectX = rectX - 45;
+            rectX = rectX - 1;
             repaint();
-            System.out.println("Naar links");
-            System.out.println(" x is " + rectX);
             if (rectX <= maxX)
             {
-                timer2.cancel(); //Terminate the thread
+                timer.cancel(); //Terminate the thread
             }
         }
     }
 
     class naarRechts extends TimerTask
     {
-        private int maxX = 450;
+        private int maxX = 500;
+        
+        Timer timer;
+        
+        public naarRechts(Timer t)
+        {
+            this.timer = t;
+        }
 
         public void run()
         {
 
-            isKlaar = false;
-            rectX = rectX + 45;
+            rectX = rectX + 1;
             repaint();
-            System.out.println("Naar rechts");
-            System.out.println(" x is " + rectX);
             if (rectX >= maxX)
             {
                 timer.cancel(); //Terminate the thread
@@ -166,13 +175,19 @@ public class Tekenpanel extends JPanel
 
     class opnieuwBeginnen extends TimerTask
     {
-
+        Timer timer;
+        
+        public opnieuwBeginnen(Timer t)
+        {
+            this.timer = t;
+        }
+        
         public void run()
         {
             rectX = 268;
             rectY = 15;
             repaint();
-            eindTimer.cancel();
+            timer.cancel();
         }
     }
 }

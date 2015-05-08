@@ -2,6 +2,7 @@ package BPP;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Timer;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
@@ -297,6 +298,7 @@ public class Scherm extends JFrame implements ActionListener
                 SimpelGretig gr = new SimpelGretig(artikellijst, this);
                 gr.vul();
                 printHandelingPerArtikel(gr);
+//                tp.setTimers();
                 aanleveringVoorAnimatie(gr.getActiePerArtikel());
 
             }
@@ -363,9 +365,12 @@ public class Scherm extends JFrame implements ActionListener
     {
         for (int iHoofdArray = 0; iHoofdArray < a.size(); iHoofdArray++)
         {
+            Timer timer = new Timer();
+            Timer timer2 = new Timer();
+            Timer eindTimer = new Timer();
             for (int iSubArray = 0; iSubArray < a.get(iHoofdArray).size(); iSubArray++)
             {
-                tp.artikelAnimatie(a.get(iHoofdArray).get(iSubArray));
+                tp.artikelAnimatie(a.get(iHoofdArray).get(iSubArray), timer, timer2, eindTimer);
 
             }
 
