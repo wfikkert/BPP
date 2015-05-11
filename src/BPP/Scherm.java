@@ -327,7 +327,7 @@ public class Scherm extends JFrame implements ActionListener
                     ve.vul();
                     dlg.setVisible(false);
                     tpVE.artikelAnimatie(ve.getRecordPakketLijst());
-                    if (ve.getRecordPakketLijst().size() > 30)
+                    if (ve.aantalGevuld(ve.getRecordPakketLijst()) > 30)
                     {
                         JOptionPane.showMessageDialog(this, "Er worden maar 30 pakketten getoont in de Volledige Enumeratie simulatie");
                     }

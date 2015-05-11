@@ -88,7 +88,6 @@ public class SimpelGretig extends Algoritme
             }
             actiePerArtikel.add(actiesVanDitArtikel);
         }
-        printResultaat();
         resultaatNaarModel();
     }
 

@@ -100,6 +100,21 @@ public class VolledigeEnumeratie
 
     }
 
+    public int aantalGevuld(ArrayList<Pakket> pakketlijst)
+    {
+        int gevuldePakketten = 0;
+        for (Pakket p : pakketlijst)
+        {
+            if (p.getOvergeblevenHoogte() < p.getHoogte())
+            {
+                gevuldePakketten++;
+            }
+        }
+
+        return gevuldePakketten;
+
+    }
+
     public void checkRecord(int i)
     {
         // Check of er een record is, zo ja welke
@@ -109,18 +124,20 @@ public class VolledigeEnumeratie
 
             for (Pakket p : pakketlijst)
             {
-                Pakket nieuwPakket = new Pakket();
-
                 if (p.getOvergeblevenHoogte() < p.getHoogte())
                 {
-                    int artikelnr = 1;
-                    for (Artikel a : p.getInhoudPakket())
+                    Pakket nieuwPakket = new Pakket();
+
+                    if (p.getOvergeblevenHoogte() < p.getHoogte())
                     {
-                        Artikel nieuwArtikel = new Artikel(a.getHoogte());
-                        nieuwPakket.voegArtikelToe(nieuwArtikel);
+                        for (Artikel a : p.getInhoudPakket())
+                        {
+                            Artikel nieuwArtikel = new Artikel(a.getHoogte());
+                            nieuwPakket.voegArtikelToe(nieuwArtikel);
+                        }
                     }
+                    recordPakketLijst.add(nieuwPakket);
                 }
-                recordPakketLijst.add(nieuwPakket);
             }
             resultaatNaarModel();
         }
