@@ -106,7 +106,8 @@ public class VolledigeEnumeratie
         if (i < record)
         {
             record = i;
-            recordPakketLijst = pakketlijst;
+            recordPakketLijst.addAll(pakketlijst);
+           
 
             resultaatNaarModel();
 
