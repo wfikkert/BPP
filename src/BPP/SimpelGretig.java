@@ -11,6 +11,7 @@ public class SimpelGretig extends Algoritme
     private ArrayList<Pakket> actievePakketten;
     private ArrayList<Pakket> vollePakketten;
     private ArrayList<ArrayList<String>> actiePerArtikel;
+    
 
     public SimpelGretig(ArrayList<Artikel> pl, Scherm scherm)
     {
@@ -87,6 +88,7 @@ public class SimpelGretig extends Algoritme
             }
             actiePerArtikel.add(actiesVanDitArtikel);
         }
+        printResultaat();
         resultaatNaarModel();
     }
 
@@ -136,4 +138,17 @@ public class SimpelGretig extends Algoritme
     {
         return actiePerArtikel;
     }
+
+    public ArrayList<Pakket> getActievePakketten()
+    {
+        return actievePakketten;
+    }
+
+    public ArrayList<Pakket> getVollePakketten()
+    {
+        return vollePakketten;
+    }
+    
+    
+    
 }

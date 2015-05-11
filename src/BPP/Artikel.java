@@ -11,6 +11,7 @@ package BPP;
  */
 public class Artikel
 {
+    
     private int hoogte;
     private boolean geplaatst;
     
