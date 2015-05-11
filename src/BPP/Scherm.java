@@ -300,24 +300,24 @@ public class Scherm extends JFrame implements ActionListener
             {
                 // Eerst refreshen van tekenpanel
                 // Dit omdat er anders nog oude data in staat.
-                jpLinks.remove(0);
-                tp = new Tekenpanel(this);
-                jpLinks.add(tp);
-                revalidate();
+                if (keuze == 1 || keuze == 2)
+                {
+                    jpLinks.remove(0);
+                    tp = new Tekenpanel(this);
+                    jpLinks.add(tp);
+                    revalidate();
+                }
 
                 if (keuze == 0)
                 {
                     jpLinks.remove(0);
-                    JPanel volEnum = new JPanel();
-                    volEnum.setLayout(new BorderLayout());
-                    volEnum.setPreferredSize(new Dimension(625, 670));
-                    JLabel nietMogelijk = new JLabel("Simulatie volgens vaste aanlevering is niet mogelijk met Volledige Enumeratie");
-                    volEnum.add(nietMogelijk, BorderLayout.CENTER);
-
-                    jpLinks.add(volEnum);
+                    TekenpanelVE tpVE = new TekenpanelVE();
+                    jpLinks.add(tpVE);
                     revalidate();
+
                     VolledigeEnumeratie ve = new VolledigeEnumeratie(artikellijst, this);
                     ve.vul();
+                    tpVE.artikelAnimatie(ve.getRecordPakketLijst());
                     startSimulatie.setEnabled(true);
                     stopSimulatie.setEnabled(false);
 

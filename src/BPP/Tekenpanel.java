@@ -34,7 +34,6 @@ public class Tekenpanel extends JPanel
 
     private int tijd = 0;
 
-    private Graphics graphicsG;
 
     private ArrayList<TimerTask> timers;
 
@@ -49,10 +48,9 @@ public class Tekenpanel extends JPanel
     }
 
     @Override
-    public void paint(Graphics g)
+    public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        graphicsG = g;
 
         setBackground(Color.gray);
         g.setColor(Color.blue);
@@ -66,7 +64,7 @@ public class Tekenpanel extends JPanel
         if (linksVol)
         {
             g.setColor(Color.red);
-            g.fillRect(10, 530, 120, 130);
+            g.fillRect(10, 530, 120, 120);
             g.setColor(Color.black);
             g.setFont(new Font("SansSerif", Font.BOLD, 26));
             g.drawString("LEGEN!", 25, 600);

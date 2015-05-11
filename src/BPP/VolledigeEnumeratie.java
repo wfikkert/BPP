@@ -148,4 +148,9 @@ public class VolledigeEnumeratie
         scherm.addResultaten("Volledige Enumeratie", teller, recordPakketLijst.size(), gemiddelde);
 
     }
+    
+    public ArrayList<Pakket> getRecordPakketLijst()
+    {
+        return recordPakketLijst;
+    }
 }
