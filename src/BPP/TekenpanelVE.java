@@ -2,6 +2,7 @@ package BPP;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,35 +27,55 @@ public class TekenpanelVE extends JPanel
         int hoogteEnBreedtePakket = 100;
         int beginXPakket = 10;
         int beginYPakket = 10;
+        int pakketteller = 0;
 
-        for (Pakket p : recordPakketLijst)
+        for (int iArray = 0; iArray < recordPakketLijst.size(); iArray++)
         {
-            if (p.getOvergeblevenHoogte() < p.getHoogte())
+            if (iArray < 30)
             {
-                System.out.println(p.getOvergeblevenHoogte());
-                System.out.println(p.getNummer());
-                
-                int beginYArtikel = beginYPakket;
-
-                g.setColor(Color.black);
-                g.drawRect(beginXPakket, beginYPakket, hoogteEnBreedtePakket, hoogteEnBreedtePakket);
-
-                for (Artikel a : p.getInhoudPakket())
+                Pakket p = recordPakketLijst.get(iArray);
+                if (p.getOvergeblevenHoogte() < p.getHoogte())
                 {
-                    System.out.println("teken");
-                    int artikelHoogte = a.getHoogte() * 10;
-                    g.setColor(kleurenGenerator());
+                    int beginYArtikel = (beginYPakket + hoogteEnBreedtePakket);
 
-                    g.fillRect(beginXPakket, beginYArtikel, hoogteEnBreedtePakket, artikelHoogte);
-                    beginYArtikel = beginYArtikel + artikelHoogte;
-                }
-                beginXPakket = beginXPakket + hoogteEnBreedtePakket + 10;
-                if (beginXPakket >= 500)
-                {
-                    beginXPakket = 10;
-                    beginYPakket = beginYPakket + hoogteEnBreedtePakket + 10;
+                    for (int iSubArray = 0; iSubArray < p.getInhoudPakket().size(); iSubArray++)
+                    {
+                        Artikel a = p.getInhoudPakket().get(iSubArray);
+                        int artikelHoogte = a.getHoogte() * 10;
+                        beginYArtikel = beginYArtikel - artikelHoogte;
+
+                        g.setColor(kleurenGenerator());
+                        g.fillRect(beginXPakket, beginYArtikel, hoogteEnBreedtePakket, artikelHoogte);
+
+                        g.setColor(Color.BLACK);
+                        g.drawLine(beginXPakket, beginYArtikel, (beginXPakket + hoogteEnBreedtePakket), beginYArtikel);
+                    }
+                    g.setColor(Color.black);
+                    g.drawRect(beginXPakket, beginYPakket, hoogteEnBreedtePakket, hoogteEnBreedtePakket);
+
+                    int lijnX = beginXPakket;
+                    int lijnY = beginYPakket;
+                    for (int i = 0; i <= 10; i++)
+                    {
+                        g.drawLine(lijnX - 5, lijnY, (lijnX + 5), lijnY);
+                        lijnY += 10;
+
+                    }
+
+                    g.setFont(new Font("SansSerif", Font.BOLD, 10));
+                    g.drawString("" + (pakketteller + 1), beginXPakket + 5, beginYPakket + 10);
+
+                    beginXPakket = beginXPakket + hoogteEnBreedtePakket + 10;
+
+                    if (beginXPakket >= 500)
+                    {
+                        beginXPakket = 10;
+                        beginYPakket = beginYPakket + hoogteEnBreedtePakket + 10;
+                    }
+
                 }
             }
+            pakketteller++;
         }
 
     }

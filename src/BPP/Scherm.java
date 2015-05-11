@@ -316,10 +316,21 @@ public class Scherm extends JFrame implements ActionListener
                     revalidate();
 
                     VolledigeEnumeratie ve = new VolledigeEnumeratie(artikellijst, this);
-                    ve.vul();
-                    tpVE.artikelAnimatie(ve.getRecordPakketLijst());
 
+                    JDialog dlg = new JDialog(this, "Even geduld a.u.b.");
+                    dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                    dlg.setSize(300, 25);
+                    dlg.setLocationRelativeTo(this);
                     
+                    dlg.setVisible(true);
+
+                    ve.vul();
+                    dlg.setVisible(false);
+                    tpVE.artikelAnimatie(ve.getRecordPakketLijst());
+                    if (ve.getRecordPakketLijst().size() > 30)
+                    {
+                        JOptionPane.showMessageDialog(this, "Er worden maar 30 pakketten getoont in de Volledige Enumeratie simulatie");
+                    }
 
                     startSimulatie.setEnabled(true);
                     stopSimulatie.setEnabled(false);
@@ -379,6 +390,11 @@ public class Scherm extends JFrame implements ActionListener
     public void disableStopButton()
     {
         stopSimulatie.setEnabled(false);
+    }
+
+    public void disableStartButton()
+    {
+        startSimulatie.setEnabled(false);
     }
 
     // lijst naar table wordt aangeroepen na het uitrekenen van de algoritmes

@@ -74,7 +74,7 @@ public class Tekenpanel extends JPanel
         else
         {
             g.setColor(Color.green);
-            g.fillRect(10, 530, 120, 130);
+            g.fillRect(10, 530, 120, 120);
             g.setColor(Color.black);
             g.setFont(new Font("SansSerif", Font.BOLD, 10));
             g.drawString("Overgebleven hoogte:", 15, 550);
@@ -87,7 +87,7 @@ public class Tekenpanel extends JPanel
         if (rechtsVol)
         {
             g.setColor(Color.red);
-            g.fillRect(490, 530, 120, 130);
+            g.fillRect(490, 530, 120, 120);
             g.setColor(Color.black);
             g.setFont(new Font("SansSerif", Font.BOLD, 26));
             g.drawString("LEGEN!", 500, 600);
@@ -95,7 +95,7 @@ public class Tekenpanel extends JPanel
         else
         {
             g.setColor(Color.green);
-            g.fillRect(490, 530, 120, 130);
+            g.fillRect(490, 530, 120, 120);
             g.setColor(Color.black);
             g.setFont(new Font("SansSerif", Font.BOLD, 10));
             g.drawString("Overgebleven hoogte:", 495, 550);
@@ -106,8 +106,8 @@ public class Tekenpanel extends JPanel
         }
 
         g.setColor(Color.black);
-        g.drawRect(10, 530, 120, 130);
-        g.drawRect(490, 530, 120, 130);
+        g.drawRect(10, 530, 120, 120);
+        g.drawRect(490, 530, 120, 120);
 
         // Het artikel wat in de doos moet, met daarin de artikelgrootte
         if (artikelHoogte != 0)

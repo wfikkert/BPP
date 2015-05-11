@@ -11,7 +11,7 @@ public class VolledigeEnumeratie
     private ArrayList<Pakket> recordPakketLijst;
     private int record;
     private int mogelijkheid = 0;
-    
+
     public VolledigeEnumeratie(ArrayList<Artikel> pl, Scherm scherm)
     {
         artikellijst = new ArrayList<>();
@@ -49,7 +49,7 @@ public class VolledigeEnumeratie
 
         for (Artikel a : artikellijst)
         {
-            if (!a.isGeplaatst())
+            if (!a.isGeplaatst() && mogelijkheid < 10000000)
             {
                 for (Pakket p : pakketlijst)
                 {
@@ -107,32 +107,22 @@ public class VolledigeEnumeratie
         {
             record = i;
 
-            System.out.println("Nieuw Record, inhoud per pakket");
-
             for (Pakket p : pakketlijst)
             {
                 Pakket nieuwPakket = new Pakket();
 
                 if (p.getOvergeblevenHoogte() < p.getHoogte())
                 {
-                    System.out.println("Pakket: " + p.getNummer());
-                    System.out.println("Inhoud");
                     int artikelnr = 1;
                     for (Artikel a : p.getInhoudPakket())
                     {
-
                         Artikel nieuwArtikel = new Artikel(a.getHoogte());
                         nieuwPakket.voegArtikelToe(nieuwArtikel);
-                        
-                        System.out.println("Pakket " + artikelnr + " hoogte: " + a.getHoogte());
-                        artikelnr++;
-
                     }
                 }
                 recordPakketLijst.add(nieuwPakket);
             }
             resultaatNaarModel();
-            
         }
 
     }
