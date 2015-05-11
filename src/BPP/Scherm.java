@@ -318,6 +318,9 @@ public class Scherm extends JFrame implements ActionListener
                     VolledigeEnumeratie ve = new VolledigeEnumeratie(artikellijst, this);
                     ve.vul();
                     tpVE.artikelAnimatie(ve.getRecordPakketLijst());
+
+                    
+
                     startSimulatie.setEnabled(true);
                     stopSimulatie.setEnabled(false);
 

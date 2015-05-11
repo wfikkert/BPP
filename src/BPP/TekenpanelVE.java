@@ -29,25 +29,31 @@ public class TekenpanelVE extends JPanel
 
         for (Pakket p : recordPakketLijst)
         {
-            int artikelY = beginYPakket + 100;
-            g.setColor(Color.black);
-            g.drawRect(beginXPakket, beginYPakket, hoogteEnBreedtePakket, hoogteEnBreedtePakket);
-
-            for (Artikel a : p.getInhoudPakket())
+            if (p.getOvergeblevenHoogte() < p.getHoogte())
             {
-                System.out.println("teken");
-                int artikelHoogte = a.getHoogte() * 10;
-                g.setColor(kleurenGenerator());
+                System.out.println(p.getOvergeblevenHoogte());
+                System.out.println(p.getNummer());
+                
+                int beginYArtikel = beginYPakket;
 
-                g.fillRect(beginXPakket, (artikelY - artikelHoogte), hoogteEnBreedtePakket, artikelY);
-                artikelY = artikelY - artikelHoogte;
-            }
+                g.setColor(Color.black);
+                g.drawRect(beginXPakket, beginYPakket, hoogteEnBreedtePakket, hoogteEnBreedtePakket);
 
-            beginXPakket = beginXPakket + hoogteEnBreedtePakket + 10;
-            if (beginXPakket >= 500)
-            {
-                beginXPakket = 10;
-                beginYPakket = beginYPakket + hoogteEnBreedtePakket + 10;
+                for (Artikel a : p.getInhoudPakket())
+                {
+                    System.out.println("teken");
+                    int artikelHoogte = a.getHoogte() * 10;
+                    g.setColor(kleurenGenerator());
+
+                    g.fillRect(beginXPakket, beginYArtikel, hoogteEnBreedtePakket, artikelHoogte);
+                    beginYArtikel = beginYArtikel + artikelHoogte;
+                }
+                beginXPakket = beginXPakket + hoogteEnBreedtePakket + 10;
+                if (beginXPakket >= 500)
+                {
+                    beginXPakket = 10;
+                    beginYPakket = beginYPakket + hoogteEnBreedtePakket + 10;
+                }
             }
         }
 
@@ -72,7 +78,7 @@ public class TekenpanelVE extends JPanel
 
     public void artikelAnimatie(ArrayList<Pakket> recordPakketLijst)
     {
-        this.recordPakketLijst = recordPakketLijst;
+        this.recordPakketLijst.addAll(recordPakketLijst);
         repaint();
     }
 }

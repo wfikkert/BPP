@@ -11,12 +11,12 @@ public class VolledigeEnumeratie
     private ArrayList<Pakket> recordPakketLijst;
     private int record;
     private int mogelijkheid = 0;
-
+    
     public VolledigeEnumeratie(ArrayList<Artikel> pl, Scherm scherm)
     {
         artikellijst = new ArrayList<>();
         pakketlijst = new ArrayList<>();
-        recordPakketLijst = new ArrayList<>();
+        recordPakketLijst = new ArrayList();
         vollePakketten = new ArrayList<>();
         artikellijst = pl;
         this.scherm = scherm;
@@ -49,7 +49,7 @@ public class VolledigeEnumeratie
 
         for (Artikel a : artikellijst)
         {
-            if (!a.isGeplaatst() && mogelijkheid <= 10000)
+            if (!a.isGeplaatst())
             {
                 for (Pakket p : pakketlijst)
                 {
@@ -106,14 +106,13 @@ public class VolledigeEnumeratie
         if (i < record)
         {
             record = i;
-            recordPakketLijst.addAll(pakketlijst);
-           
-
-            resultaatNaarModel();
 
             System.out.println("Nieuw Record, inhoud per pakket");
-            for (Pakket p : recordPakketLijst)
+
+            for (Pakket p : pakketlijst)
             {
+                Pakket nieuwPakket = new Pakket();
+
                 if (p.getOvergeblevenHoogte() < p.getHoogte())
                 {
                     System.out.println("Pakket: " + p.getNummer());
@@ -121,11 +120,19 @@ public class VolledigeEnumeratie
                     int artikelnr = 1;
                     for (Artikel a : p.getInhoudPakket())
                     {
+
+                        Artikel nieuwArtikel = new Artikel(a.getHoogte());
+                        nieuwPakket.voegArtikelToe(nieuwArtikel);
+                        
                         System.out.println("Pakket " + artikelnr + " hoogte: " + a.getHoogte());
                         artikelnr++;
+
                     }
                 }
+                recordPakketLijst.add(nieuwPakket);
             }
+            resultaatNaarModel();
+            
         }
 
     }
@@ -149,7 +156,7 @@ public class VolledigeEnumeratie
         scherm.addResultaten("Volledige Enumeratie", teller, recordPakketLijst.size(), gemiddelde);
 
     }
-    
+
     public ArrayList<Pakket> getRecordPakketLijst()
     {
         return recordPakketLijst;
