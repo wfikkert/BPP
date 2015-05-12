@@ -151,7 +151,7 @@ public class Scherm extends JFrame implements ActionListener
         jpActieButtons.setLayout(new GridLayout(2, 1));
         startSimulatie = new JButton("Start simulatie");
         stopSimulatie = new JButton("Stop simulatie");
-        
+
         // Inhoud daadwerkelijk toevoegen aan vak 'acties'
         jpActieButtons.add(startSimulatie);
         jpActieButtons.add(stopSimulatie);
@@ -319,7 +319,7 @@ public class Scherm extends JFrame implements ActionListener
                     dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
                     dlg.setSize(300, 25);
                     dlg.setLocationRelativeTo(this);
-                    
+
                     dlg.setVisible(true);
 
                     ve.vul();
@@ -351,8 +351,13 @@ public class Scherm extends JFrame implements ActionListener
             }
             catch (ArithmeticException ae)
             {
+                jpLinks.remove(0);
+                tp = new Tekenpanel(this);
+                jpLinks.add(tp);
+                revalidate();
                 JOptionPane.showMessageDialog(this, "Er zijn geen artikelen meegegeven");
                 dlg.setVisible(false);
+                disableStopButton();
                 enableStartButton();
             }
 
