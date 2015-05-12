@@ -4,6 +4,7 @@ public class Artikel
 {
     
     private int hoogte;
+    private int artikelnummer;
     private boolean geplaatst;
     
     public Artikel(int hoogte)

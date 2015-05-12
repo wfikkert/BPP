@@ -11,8 +11,6 @@ import javax.swing.JTextField;
 
 public class Dialoog extends JDialog implements ActionListener
 {
-
-
     private JLabel hoogte;
     private JTextField jftHoogte;    
     private JButton annuleren;

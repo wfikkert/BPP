@@ -14,7 +14,6 @@ import javax.swing.table.*;
 
 public class Scherm extends JFrame implements ActionListener
 {
-
     private JPanel jpLinks;
     private JButton artikelToevoegen;
     private JLabel jlSelectArtikelTitel;
@@ -59,10 +58,9 @@ public class Scherm extends JFrame implements ActionListener
         jlSelectArtikelTitel = new JLabel("Artikelen toevoegen");
         jlSelectArtikelTitel.setFont(new Font("SansSerif", Font.BOLD, 26));
 
-        // Eerste rij van de GridLayout vullen, van vak 1
+        // Titel 'Artikel toevoegen' positioneren op de BorderLayout.NORTH
         jpArtikelSelectie.add(jlSelectArtikelTitel, BorderLayout.NORTH);
 
-        // JPanel aanmaken voor het vak 1.2, onderverdelen in 2 rijen en 1 kolom
         JPanel jpSelectArtikelInh = new JPanel();
         jpSelectArtikelInh.setLayout(new BorderLayout());
         JPanel jpSelectArtikelButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -73,25 +71,21 @@ public class Scherm extends JFrame implements ActionListener
         jpSelectArtikelButtons.add(aantal);
         jpSelectArtikelButtons.add(genereerArtikelen);
 
-        // JPanel 1.2.1 toevoegen aan vak 1.2
+        // JPanel met als inhoud spinner & genereer artikel toevoegen aan BorderLayout.NORTH
         jpSelectArtikelInh.add(jpSelectArtikelButtons, BorderLayout.NORTH);
 
-        // JPanel aanmaken voor 1.2.2, button 'Handmatig artikelen toevoegen'
+        // JPanel 'Handmatig artikelen toevoegen', die op BorderLayout.CENTER
         JPanel jpSelectArtikelButtonsHandm = new JPanel(new FlowLayout(FlowLayout.LEFT));
         handmatigArtikelen = new JButton("Handmatig artikelen toevoegen");
         jpSelectArtikelButtonsHandm.add(handmatigArtikelen);
-
-        // Vak 1.2.2 toevoegen aan 1.2
         jpSelectArtikelInh.add(jpSelectArtikelButtonsHandm, BorderLayout.CENTER);
-
-        // Vak 1.2 toevoegen aan vak 1
         jpArtikelSelectie.add(jpSelectArtikelInh);
 
-        // JPanel aanmaken voor vak 2
+        // JPanel aanmaken voor artikellijst
         JPanel jpArtikellijst = new JPanel();
         jpArtikellijst.setLayout(new BorderLayout());
 
-        // Titel aanmaken voor vak 2
+        // Titel 'Artikellijst's
         titelArtikellijst = new JLabel("Artikellijst");
         titelArtikellijst.setFont(new Font("SansSerif", Font.BOLD, 26));
 
@@ -110,67 +104,70 @@ public class Scherm extends JFrame implements ActionListener
         // Leeg artikellijst button
         leegArtikellijst = new JButton("Leeg artikellijst");
 
-        // JTable toevoegen aan vak 2
+        // JTable en leeg artikellijst button toevoegen
         jpArtikellijst.add(titelArtikellijst, BorderLayout.NORTH);
         jpArtikellijst.add(jtArtikellijst, BorderLayout.CENTER);
         jpArtikellijst.add(leegArtikellijst, BorderLayout.EAST);
 
-        // JScrollPane aanmaken
+        // JScrollPane aanmaken voor JTable
         JScrollPane scrollbarLijst = new JScrollPane();
         scrollbarLijst.setViewportView(jtArtikellijst);
 
-        //JScrollPane toevoegen aan vak 2
+        //JScrollPane toevoegen aan JTable
         jpArtikellijst.add(scrollbarLijst, BorderLayout.CENTER);
 
-        // Rechterpaneeel Vak 3 aanmaken
+        // Vak voor 'algoritme selecteren' en 'acties'
         JPanel jpAlgoEnActies = new JPanel();
         jpAlgoEnActies.setLayout(new GridLayout(1, 2));
 
-        //Vak 3.1 aanmaken
+        // Vullen van vakken algoritme selecteren en acties
         JPanel jpSelectAlgo = new JPanel(new BorderLayout());
         JLabel algoritmeKiezen = new JLabel("Algoritme kiezen");
         algoritmeKiezen.setFont(new Font("SansSerif", Font.BOLD, 26));
         jpSelectAlgo.add(algoritmeKiezen, BorderLayout.NORTH);
 
+        // DefaultListModel voor algoritmeselectie
         DefaultListModel algoLijstInhoud = new DefaultListModel();
         algoLijstInhoud.addElement("Volledige Enumeratie");
         algoLijstInhoud.addElement("Simpel Gretig");
         algoLijstInhoud.addElement("Almost Worst");
 
+        // Nieuwe JList aanmaken met waardes van DefaultListModel
         algoLijst = new JList(algoLijstInhoud);
         algoLijst.setSelectedIndex(0);
         algoLijst.setBorder(new LineBorder(Color.BLACK));
         algoLijst.setSelectionMode(SINGLE_SELECTION);
         jpSelectAlgo.add(algoLijst, BorderLayout.CENTER);
 
-        //Vak 3.2 aanmaken
+        //Vak 'acties' een titel geven
         JPanel jpSimulatorActies = new JPanel(new BorderLayout());
         JLabel acties = new JLabel("Acties");
         acties.setFont(new Font("SansSerif", Font.BOLD, 26));
         jpSimulatorActies.add(acties, BorderLayout.NORTH);
 
-        // Vak 3.2 inhoud (actiebuttons)
+        // Inhoud maken voor vak 'acties'
         JPanel jpActieButtons = new JPanel();
         jpActieButtons.setLayout(new GridLayout(2, 1));
         startSimulatie = new JButton("Start simulatie");
         stopSimulatie = new JButton("Stop simulatie");
-
+        
+        // Inhoud daadwerkelijk toevoegen aan vak 'acties'
         jpActieButtons.add(startSimulatie);
         jpActieButtons.add(stopSimulatie);
         disableStopButton();
-
         jpSimulatorActies.add(jpActieButtons, BorderLayout.CENTER);
 
-        // Vak 3.1 en 3.2 aanmaken aan vak 3
+        // Overkoepelende JPanel acties en algoritme selecteren toevoegen
         jpAlgoEnActies.add(jpSelectAlgo);
         jpAlgoEnActies.add(jpSimulatorActies);
 
-        // Vak 4 aanmaken
+        // Vak resultaten aanmaken
         JPanel jpResulatenOverzicht = new JPanel(new BorderLayout());
         JLabel resultaten = new JLabel("Resultaten");
         resultaten.setFont(new Font("SansSerif", Font.BOLD, 26));
         jpResulatenOverzicht.add(resultaten, BorderLayout.NORTH);
 
+        // DefaultTableModel aanmaken voor JTable
         model2 = new DefaultTableModel();
         resultatenlijst = new JTable(model2);
         // Kolommen toevoegen
@@ -179,7 +176,6 @@ public class Scherm extends JFrame implements ActionListener
         model2.addColumn("Aantal artikelen");
         model2.addColumn("Pakketten gemiddeld % gevuld");
 
-        //resultatenlijst.getColumn("Artikelnr.").setMaxWidth(100);
         resultatenlijst.setEnabled(false);
         resultatenlijst.getTableHeader().setReorderingAllowed(false);
         resultatenlijst.getTableHeader().setResizingAllowed(false);
@@ -317,6 +313,7 @@ public class Scherm extends JFrame implements ActionListener
 
                     VolledigeEnumeratie ve = new VolledigeEnumeratie(artikellijst, this);
 
+                    // 'Even wachten' dialoog tot VUL() methode klaar is
                     JDialog dlg = new JDialog(this, "Even geduld a.u.b.");
                     dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
                     dlg.setSize(300, 25);
@@ -428,6 +425,7 @@ public class Scherm extends JFrame implements ActionListener
     {
         for (int iHoofdArray = 0; iHoofdArray < a.size(); iHoofdArray++)
         {
+            // Timers setten per for-loop, zodat elke artikelAnimatie een eigen timer heeft
             Timer timer = new Timer();
             Timer timer2 = new Timer();
             Timer timer3 = new Timer();

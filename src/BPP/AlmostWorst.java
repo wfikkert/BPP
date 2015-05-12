@@ -84,6 +84,7 @@ public class AlmostWorst extends Algoritme
         resultaatNaarModel();
     }
 
+    // Printen van alle volle pakketten en actieve pakketten
     public void printResultaat()
     {
         System.out.println("Volle pakketten");
@@ -102,6 +103,7 @@ public class AlmostWorst extends Algoritme
         }
     }
 
+    // Resultaat naar het tabel in het scherm
     public void resultaatNaarModel()
     {
         int teller = 0;
@@ -126,6 +128,7 @@ public class AlmostWorst extends Algoritme
         scherm.addResultaten("Almost Worst", teller, artikellijst.size(), gemiddelde);
     }
     
+    // Returnen van actiePerArtikel
     public ArrayList<ArrayList<String>> getActiePerArtikel()
     {
         return actiePerArtikel;
