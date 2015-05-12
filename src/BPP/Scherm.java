@@ -31,6 +31,7 @@ public class Scherm extends JFrame implements ActionListener
     private JButton leegArtikellijst;
     private JTable resultatenlijst;
     private JList algoLijst;
+    private JDialog dlg;
 
     public Scherm()
     {
@@ -314,7 +315,7 @@ public class Scherm extends JFrame implements ActionListener
                     VolledigeEnumeratie ve = new VolledigeEnumeratie(artikellijst, this);
 
                     // 'Even wachten' dialoog tot VUL() methode klaar is
-                    JDialog dlg = new JDialog(this, "Even geduld a.u.b.");
+                    dlg = new JDialog(this, "Even geduld a.u.b.");
                     dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
                     dlg.setSize(300, 25);
                     dlg.setLocationRelativeTo(this);
@@ -351,6 +352,7 @@ public class Scherm extends JFrame implements ActionListener
             catch (ArithmeticException ae)
             {
                 JOptionPane.showMessageDialog(this, "Er zijn geen artikelen meegegeven");
+                dlg.setVisible(false);
                 enableStartButton();
             }
 
