@@ -31,9 +31,8 @@ public class TekenpanelVE extends JPanel
         int beginYPakket = 10;
         int pakketteller = 0;
 
-        for (int iArray = 0; iArray < 30; iArray++)
+        for (int iArray = 0; iArray < 30 && iArray < recordPakketLijst.size(); iArray++)
         {
-
             Pakket p = recordPakketLijst.get(iArray);
             if (p.getOvergeblevenHoogte() < p.getHoogte())
             {

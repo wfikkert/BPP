@@ -146,21 +146,26 @@ public class VolledigeEnumeratie
 
     public void resultaatNaarModel()
     {
-        int teller = 0;
+        int pakketTeller = 0;
+        int artikelTeller = 0;
         int som = 0;
         for (Pakket p : recordPakketLijst)
         {
             if (p.getOvergeblevenHoogte() < p.getHoogte())
             {
                 int percentage = (10 - p.getOvergeblevenHoogte()) * 100 / 10;
-                teller++;
+                pakketTeller++;
                 som = som + percentage;
+                for(Artikel a : p.getInhoudPakket())
+                {
+                    artikelTeller++;
+                }
             }
         }
 
-        int gemiddelde = som / teller;
+        int gemiddelde = som / pakketTeller;
 
-        scherm.addResultaten("Volledige Enumeratie", teller, recordPakketLijst.size(), gemiddelde);
+        scherm.addResultaten("Volledige Enumeratie", pakketTeller, artikelTeller, gemiddelde);
 
     }
 
