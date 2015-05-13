@@ -60,7 +60,7 @@ public class SimpelGretig extends Algoritme
                     {
                         vollePakketten.add(actievePakketten.get(0));
 
-                        actievePakketten.set(0, new Pakket());
+                        actievePakketten.set(0, new Pakket()); 
 
                         actiesVanDitArtikel.add("nieuwLinks");
                     }

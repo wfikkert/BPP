@@ -8,6 +8,5 @@ public abstract class Algoritme
 
     public abstract void resultaatNaarModel();
 
-    public abstract ArrayList<ArrayList<String>> getActiePerArtikel();
     
 }

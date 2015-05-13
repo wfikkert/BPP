@@ -2,7 +2,7 @@ package BPP;
 
 import java.util.ArrayList;
 
-public class VolledigeEnumeratie
+public class VolledigeEnumeratie extends Algoritme
 {
     private Scherm scherm;
     private ArrayList<Artikel> artikellijst;
